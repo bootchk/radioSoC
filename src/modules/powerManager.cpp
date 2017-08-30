@@ -84,7 +84,7 @@ bool PowerManager::isPowerExcess() {
 bool PowerManager::isPowerAboveUltraHigh(){
 	bool result;
 #ifdef NRF52
-	result = powerMonitor.isVddGreaterThan2_8V();
+	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
 #elif NRF51
 	ADCResult value = adc.getVccProportionTo255();
 	result = (value >= ADC::Result3_2V);

@@ -39,6 +39,8 @@ void assertNeverUsedDevicesOff();
  */
 void assertNeverUsedDevicesOff() {
 
+#ifdef FUTURE
+	This was all working but since radioSoC was extracted, needs to be made platform independent
 #ifdef NRF52
 	// nrf52 FPU is disabled.
 	assert(SCB->CPACR == 0);
@@ -59,7 +61,7 @@ void assertNeverUsedDevicesOff() {
     //assert (DWT->CYCCNT == 0);
 #endif
 
-#ifdef FUTURE
+
 	TODO move to nRF5x
 	// Peripherals in reset condition
 
