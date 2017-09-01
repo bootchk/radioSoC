@@ -51,6 +51,7 @@ public:
 	 * For testing on NRF52DK, change to V23 since debugger needs higher voltage for comm to target.
 	 */
 
+	static void initBrownoutCallback();
 
 	/*
 	 * Sets mode.

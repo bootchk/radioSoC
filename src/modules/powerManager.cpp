@@ -49,10 +49,12 @@ ADC adc;
  */
 
 void PowerManager::init() {
+
 #ifdef NRF51
 	adc.init();
 #endif
-	// powerMonitor need no init
+
+	PowerMonitor::initBrownoutCallback();
 }
 
 

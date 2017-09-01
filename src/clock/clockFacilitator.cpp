@@ -22,6 +22,25 @@
 #include "../iRQHandlers/powerClockIRQHandler.cpp"
 
 
+namespace {
+
+void lfClockStartedCallback() {
+	Sleeper::setReasonForWake(ReasonForWake::LFClockStarted);
+}
+
+void hfClockStartedCallback() {
+	/*
+	 * Signal wake reason to sleep.
+	 * Assert that no other interrupts can come and change reasonForWake.
+	 * Otherwise, we should not set it directly, but prioritize it.
+	 */
+	Sleeper::setReasonForWake(ReasonForWake::HFClockStarted);
+}
+
+}
+
+
+
 void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	/*
@@ -30,6 +49,9 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	// Starting clocks with sleep requires IRQ enabled
 	Nvic::enablePowerClockIRQ();
+
+	// Convenient to register callback for HF clock here also.
+	LowFrequencyClock::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
 
 	LowFrequencyClock::enableInterruptOnStarted();
 	LowFrequencyClock::configureXtalSource();

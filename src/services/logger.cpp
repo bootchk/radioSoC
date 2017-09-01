@@ -8,7 +8,7 @@
 #define BUFFER_INDEX 0
 
 
-// may be defined in Makefilenrf52 -DLOGGING
+// if defined in build config -DLOGGING
 #ifdef LOGGING
 // from NRF_SDK/external/segger_rtt
 #include <SEGGER_RTT.h>

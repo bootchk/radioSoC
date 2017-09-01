@@ -1,5 +1,11 @@
 #include "powerMonitor.h"
 
+
+// Used by brownoutCallback
+#include "../services/brownoutRecorder.h"
+#include "../clock/sleeper.h"
+
+
 // platform lib e.g. nRF5x
 #include <drivers/powerComparator.h>
 
@@ -127,7 +133,42 @@ bool isVddGreaterThanThresholdWithBrownoutDetection(PowerThreshold threshold) {
 }
 
 
+/*
+ * Called from ISR upon brownout.
+ * Interrupts disabled, should be short.
+ */
+void brownoutCallback() {
+
+	BrownoutRecorder::recordToFlash();
+
+#ifdef NOT_USED
+	// Generally, brownout during sleep, so not much use to get faultAddress
+	BrownoutRecorder::recordToFlash(faultAddress);
+#endif
+
+	/*
+	 * Proceed and wait for actual BOR
+	 */
+	/*
+	 *  Signal, if we were sleeping.
+	 */
+	// TODO prioritize
+	Sleeper::setReasonForWake(ReasonForWake::BrownoutWarning);
+
+	// assert brownout ISR disables further brownout detection
+}
+
+
+
 }  // namespace
+
+
+
+
+
+void PowerMonitor::initBrownoutCallback() {
+	PowerComparator::registerBrownoutCallback(brownoutCallback);
+}
 
 
 
