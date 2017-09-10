@@ -12,6 +12,6 @@ The build configuration has include paths to Nordic SDK, for these files to use.
 Logging is potent if LOGGING defined.
 If logging is potent, it uses these files.
 
-Built into the library.
+Built into the library, except excluded from certain build configurations.
 Can be used by calling app.
 If calling app does not use these files AND if logging is not potent, the linker will not use the functions defined in these files.
