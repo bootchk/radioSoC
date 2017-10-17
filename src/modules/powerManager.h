@@ -4,7 +4,7 @@
 /*
  * Levels.  The count of ranges is one more.
  */
-enum class VoltageRange { BelowUltraLow, UltraLowToLow, LowToMedium, MediumToHigh, HighToExcess, AboveExcess};
+enum class VoltageRange { BelowUltraLow, UltraLowToLow, LowToMedium, MediumToHigh, HighToNearExcess, NearExcess, AboveExcess};
 
 /*
  * Understands:

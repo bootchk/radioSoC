@@ -131,12 +131,18 @@ VoltageRange PowerManager::getVoltageRange() {
 	 * Implementation: step through levels from high to low
 	 */
 	VoltageRange result;
-	// isPowerExcess might use ADC and take >20uSec
+	// isPowerExcess and isPowerNearExcess might use ADC and take >20uSec
+	/*
+	Temp  omit excess, we want to catch it before it gets excess
 	if (isPowerExcess()) {
 		result = VoltageRange::AboveExcess;
 	}
+	*/
+	if (isPowerNearExcess()) {
+		result = VoltageRange::NearExcess;
+		}
 	else if (isPowerAboveHigh()) {
-			result = VoltageRange::HighToExcess;
+			result = VoltageRange::HighToNearExcess;
 		}
 	else if (isPowerAboveMedium()) {
 		result = VoltageRange::MediumToHigh;
