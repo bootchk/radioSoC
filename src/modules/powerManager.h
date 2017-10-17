@@ -40,8 +40,9 @@ public:
 	/*
 	 * Levels
 	 */
-	static bool isPowerExcess();	// Above Vmax of chip 3.6V
-	static bool isPowerAboveUltraHigh();	//
+	static bool isPowerExcess();		// Above Vmax of chip e.g. 3.6V
+	static bool isPowerNearExcess();
+	static bool isPowerAboveUltraHigh();
 	static bool isPowerAboveHigh();
 	static bool isPowerAboveMedium();
 	static bool isPowerAboveLow();

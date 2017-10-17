@@ -71,7 +71,10 @@ bool PowerManager::isPowerExcess() {
 	bool result;
 #ifdef NRF52
 	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
-	return false;	// powerMonitor.isVddGreaterThan2_7V();
+	// result = false;
+
+	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
+
 #elif NRF51
 	ADCResult value = adc.getVccProportionTo255();
 	// Need to use value smaller than 0xFF? say 3.4V
@@ -82,6 +85,28 @@ bool PowerManager::isPowerExcess() {
 #endif
 	return result;
 }
+
+bool PowerManager::isPowerNearExcess() {
+	bool result;
+#ifdef NRF52
+	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
+	// result = false;
+
+	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
+
+#elif NRF51
+	ADCResult value = adc.getVccProportionTo255();
+	// Need to use value smaller than 0xFF? say 3.4V
+	// This is fragile: must use >= since value never greater than ADC::Result3_6V
+	// TODO nearness a parameter defined elsewhere instead of here just 0.2V
+	result = (value >= ADC::Result3_4V);
+#else
+#error "NRF51 or NRF52 not defined"
+#endif
+	return result;
+}
+
+
 
 bool PowerManager::isPowerAboveUltraHigh(){
 	bool result;
