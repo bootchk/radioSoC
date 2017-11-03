@@ -556,5 +556,9 @@ void Radio::spinUntilXmitComplete() {
 
 
 
+int Radio::receivedSignalStrength() {
+	return RadioData::device.receivedSignalStrength();
+}
+
 
 

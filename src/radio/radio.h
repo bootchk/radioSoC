@@ -227,8 +227,6 @@ public:
 	static void spinUntilReceiveComplete();
 	static void stopReceive();
 
-	static bool isPacketCRCValid();
-
 	static bool isEnabledInterruptForMsgReceived();
 	static bool isEnabledInterruptForEndTransmit();
 
@@ -240,8 +238,12 @@ public:
 	static void setupXmitOrRcv(BufferPointer data, uint8_t length);
 #endif
 
+	/*
+	 * Attributes of most recently received packet.
+	 */
+	static bool isPacketCRCValid();
 	static LongTime timeOfArrival();
-
+    static int receivedSignalStrength();
 
 
 // FUTURE to anon namespace
