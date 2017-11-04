@@ -188,7 +188,7 @@ void Radio::dispatchPacketCallback() {
 
 void Radio::configure()
 {
-	// Not require radio device power on
+	// Not require radio device power on (that bit just resets config to default.)
 
 	// assert radio is configured to device reset defaults, which is non-functional.
 	configurePhysicalProtocol();

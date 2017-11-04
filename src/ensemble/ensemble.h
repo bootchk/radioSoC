@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../radio/radio.h"	// BufferPointer
+#include "../radioUseCase/radioUseCase.h"
 
 
 /*
@@ -50,7 +51,15 @@ class Ensemble {
 public:
 	// In order generally called
 
-	static void init(MsgReceivedCallback);
+	/*
+	 * Init ensemble members and configure Radio from RadioUseCase
+	 */
+	static void init(MsgReceivedCallback, RadioUseCase*);
+
+	/*
+	 * Set use case, and apply it to Radio.
+	 */
+	static void setRadioUseCase(RadioUseCase*);
 
 	// Ensure ensemble devices ready
 	static void startup();

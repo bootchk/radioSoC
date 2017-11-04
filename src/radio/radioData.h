@@ -1,10 +1,14 @@
 
 #pragma once
 
+
+
 // platform lib e.g. nRF5x
 #include <drivers/radio/radio.h>
 
-
+/*
+ * Data (not a class) associated with Radio but not kept by RadioDevice.
+ */
 namespace RadioData {
 
 // Singleton.  Device is not shared.

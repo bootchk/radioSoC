@@ -65,8 +65,8 @@ void Radio::configurePhysicalProtocol() {
 
 	// !!! DMA set up later, not here.
 
-	// FUTURE: parameters
-	// Default tx power
+	// Other parameters are defaulted, possible set later by RadioUseCase
+
 	// Default mode i.e. bits per second
 	assert(device.frequency() == FrequencyIndex);
 	isConfiguredState = true;
@@ -76,6 +76,11 @@ void Radio::configurePhysicalProtocol() {
 bool Radio::isConfigured() { return isConfiguredState; }
 
 
-void Radio::configureXmitPower(unsigned int dBm) {
-	device.configureXmitPower(dBm);
+void Radio::configureXmitPower(TransmitPowerdBm dBm) {
+	/*
+	 * Adaption
+	 *
+	 * This depends on radioSoc enum values equalling device values.
+	 */
+	device.configureXmitPower((unsigned int) dBm);
 }

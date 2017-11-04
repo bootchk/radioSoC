@@ -17,16 +17,44 @@
 #include "../clock/longClock.h"
 #include "../services/logger.h"
 
+#include "../radio/radioData.h"
 
-void Ensemble::init(MsgReceivedCallback aCallback) {
+#include "../radioUseCase/radioUseCase.h"
+
+
+namespace {
+
+	// has-a
+	RadioUseCase* activeUseCase = nullptr;
+
+	// !!! Some parameters of use case can be changed and apply immediately to ensemble.
+}
+
+
+
+void Ensemble::init(MsgReceivedCallback aCallback, RadioUseCase* aRadioUseCase) {
 
 	assert(! HfCrystalClock::isRunning());	// xtal not running
 
-	// On some platforms, it stays configured for life of app.
+	// On some platforms, it stays configured until mcu is reset.
+	// TODO rename configureProtocol
 	Radio::configure();
+
+	setRadioUseCase(aRadioUseCase);
 
 	Radio::setMsgReceivedCallback(aCallback);
 }
+
+
+void Ensemble::setRadioUseCase(RadioUseCase* aRadioUseCase){
+	activeUseCase = aRadioUseCase;
+	assert(activeUseCase!=nullptr);
+
+	// Apply persistent but changeable on the fly parameters
+	activeUseCase->applyToRadio();
+}
+
+
 
 // The only member that needs configuration is Radio
 bool Ensemble::isConfigured(){ return Radio::isConfigured(); }

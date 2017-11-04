@@ -2,6 +2,8 @@
 
 #include <inttypes.h>
 
+#include "radioTypes.h"
+
 // platform lib e.g. nRF5x
 //#include <drivers/radio/radio.h>
 //#include <drivers/hfClock.h>
@@ -27,6 +29,9 @@ enum class RadioPowerState {
 	On,
 	Off
 };
+
+
+
 
 /*
  * High level driver for radio peripheral
@@ -180,9 +185,7 @@ public:
 	static bool isConfigured();
 	static void configurePhysicalProtocol();
 
-	// platform independent 1: +4, 8: -40, else 0.   Units dBm.
-	// FUTURE enum
-	static void configureXmitPower(unsigned int dBm);
+	static void configureXmitPower(TransmitPowerdBm power);
 
 	//static void resetAndConfigure();
 
