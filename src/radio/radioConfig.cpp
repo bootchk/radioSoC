@@ -80,7 +80,7 @@ void Radio::configureXmitPower(TransmitPowerdBm dBm) {
 	/*
 	 * Adaption
 	 *
-	 * This depends on radioSoc enum values equalling device values.
+	 * Simple cast depends on radioSoc enum values equal device values.
 	 */
 	device.configureXmitPower((unsigned int) dBm);
 }

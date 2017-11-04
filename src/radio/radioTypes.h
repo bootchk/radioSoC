@@ -11,7 +11,7 @@
  */
 enum class TransmitPowerdBm {
 	Plus4 = 0x04,
-	Plus3 = 0x03,
+	// Plus3 = 0x03,	// Not available on nrf51
 	Plus0 = 0x00,
     Minus4 = 0xFC,
 	Minus8 = 0xF8,
