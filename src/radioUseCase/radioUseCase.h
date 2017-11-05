@@ -42,5 +42,6 @@ public:
 	// TODO make persist through reset
 	static void setXmitPower(TransmitPowerdBm power);
 
+	// Returns xmit power from device, not any memoized value
 	static TransmitPowerdBm getXmitPower();
 };

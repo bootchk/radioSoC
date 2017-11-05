@@ -186,6 +186,7 @@ public:
 	static void configurePhysicalProtocol();
 
 	static void configureXmitPower(TransmitPowerdBm power);
+	static TransmitPowerdBm getXmitPower();
 
 	//static void resetAndConfigure();
 

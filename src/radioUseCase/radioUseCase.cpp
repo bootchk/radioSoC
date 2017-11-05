@@ -23,5 +23,6 @@ void RadioUseCase::setXmitPower(TransmitPowerdBm value) {
 }
 
 TransmitPowerdBm RadioUseCase::getXmitPower() {
-	return power;
+	// !!! return value from device
+	return Radio::getXmitPower();
 }
