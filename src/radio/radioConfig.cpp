@@ -77,6 +77,9 @@ bool Radio::isConfigured() { return isConfiguredState; }
 
 
 void Radio::configureXmitPower(TransmitPowerdBm dBm) {
+	// Radio not configurable while in use
+	assert(!isInUse());
+
 	/*
 	 * Adaption
 	 *
