@@ -18,7 +18,7 @@ enum class TransmitPowerdBm : int8_t {
     Minus4 = -4,
 	Minus8 = -8,
 	Minus12 = -12,
-	Minux16 = -16,
+	Minus16 = -16,
 	Minus20 = -20,
 	Minus40 = -40
 };

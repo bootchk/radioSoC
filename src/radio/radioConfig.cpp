@@ -85,6 +85,24 @@ void Radio::configureXmitPower(TransmitPowerdBm dBm) {
 	device.configureXmitPower((unsigned int) dBm);
 }
 
+bool Radio::isValidXmitPower(TransmitPowerdBm dBm) {
+
+	bool result = false;
+	switch(dBm) {
+	case TransmitPowerdBm::Plus4:
+	case TransmitPowerdBm::Plus0:
+	case TransmitPowerdBm::Minus4:
+	case TransmitPowerdBm::Minus8:
+	case TransmitPowerdBm::Minus12:
+	case TransmitPowerdBm::Minus16:
+	case TransmitPowerdBm::Minus20:
+	case TransmitPowerdBm::Minus40:
+		result = true;
+	}
+	return result;
+}
+
+
 TransmitPowerdBm Radio::getXmitPower() {
 	// Types are both int8_t but need cast??
 	return static_cast<TransmitPowerdBm> (device.getXmitPower());

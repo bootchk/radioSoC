@@ -187,6 +187,8 @@ public:
 
 	static void configureXmitPower(TransmitPowerdBm power);
 	static TransmitPowerdBm getXmitPower();
+	// Runtime validity check of OTA value
+	static bool isValidXmitPower(TransmitPowerdBm power);
 
 	//static void resetAndConfigure();
 
