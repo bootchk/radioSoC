@@ -12,7 +12,7 @@
  * - HfClock (just an oscillator, no counting).  No dependencies but delays or sleeps until running.
  *
  *
- * LongClock and Timers depend on RTC0 (Counter and CompareRegisters) depends on LowFrequencyClock.
+ * LongClock and Timers depend on a RTC (Counter and CompareRegisters) depends on LowFrequencyClock.
  * Starting requires IRQ enabled.
  *
  * Radio requires HfClock.

@@ -12,11 +12,11 @@
 #include <drivers/counter.h>
 
 /*
- * !!! Include RTC0_IRQHandler here so that it overrides default handler.
+ * !!! Include RTCx_IRQHandler here so that it overrides default handler.
  * If you just leave it as a separate file,
  * it doesn't resolve any symbols and so linker does not link it in
  */
-#include "../iRQHandlers/rtc0IRQ.cpp"
+#include "../iRQHandlers/rtcxIRQ.cpp"
 
 /*
  * Private data.
@@ -72,7 +72,7 @@ void LongClock::start() {
 	// Docs don't say this can't be done while counter is running
 	Counter::configureOverflowInterrupt();
 	// assert overflow interrupt is enabled in device
-	// assert RTC0_IRQ is enabled (for counter and timers)
+	// assert RTCx_IRQ is enabled (for counter and timers)
 	// mostSignificantBits will increment on overflow
 
 	// assert prescaler is default of 0, i.e. 30uSec tick
