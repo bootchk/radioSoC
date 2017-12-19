@@ -66,10 +66,35 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	assert(LowFrequencyClock::isRunning());
 
-	// Finally, enable Counter to start counting ticks of LFClock
+	// Enable Counter to start counting ticks of LFClock
 	LongClock::start();
 
+	// Disable interrupt since it may conflict with SD and other uses.
+	// After CLOCKSTARTED interrupt, we don't expect (or can) receive other events/interrupts
+	Nvic::disablePowerClockIRQ();
+
 }
+
+
+void ClockFacilitator::startLongClockNoWaitUntilRunning() {
+	/*
+	 * Assume someone else (SD) started LF clock
+	 *
+	 * Here we "request" it, so it won't stop if others (SD) release it.
+	 */
+	// TODO
+	// Enable Counter to start counting ticks of LFClock
+	LongClock::start();
+}
+
+
+
+
+bool ClockFacilitator::isLongClockRunning() {
+	// delegate
+	return LongClock::isOSClockRunning();
+}
+
 
 
 void ClockFacilitator::startHFClockWithSleepConstantExpectedDelay(OSTime delay){

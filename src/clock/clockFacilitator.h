@@ -24,8 +24,17 @@ public:
 	 * Start LongClock and insure it is running so Timers can be started.
 	 * Blocks.
 	 * Varied duration.
+	 * Cannot be used with SD since uses interrupt on blocked device PowerClock.
 	 */
 	static void startLongClockWithSleepUntilRunning();
+
+	/*
+	 * Start LongClock without ensuring it is running.
+	 */
+	static void startLongClockNoWaitUntilRunning();
+
+	static bool isLongClockRunning();
+
 
 	/*
 	 * Start HfClock.

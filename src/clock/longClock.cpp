@@ -158,8 +158,7 @@ OSTime LongClock::osClockNowTime() {
  * - AND Counter is started (enabled to count LFClock)
  */
 bool LongClock::isOSClockRunning(){
-	return LowFrequencyClock::isRunning();
-	// TODO AND counter started
+	return ( LowFrequencyClock::isRunning() and Counter::isTicking() );
 }
 
 /*
