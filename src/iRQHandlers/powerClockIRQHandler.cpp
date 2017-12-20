@@ -1,7 +1,7 @@
 
 // platform lib
+#include <drivers/lowFreqClockRaw.h>
 #include <drivers/powerComparator.h>
-#include <drivers/lowFrequencyClock.h>
 
 
 
@@ -48,7 +48,7 @@ POWER_CLOCK_IRQHandler() {
 	 */
 	PowerComparator::powerISR();
 
-	LowFrequencyClock::clockISR();
+	LowFreqClockRaw::clockISR();
 }
 
 

@@ -8,8 +8,8 @@
 #include "timer.h"
 
 // platform lib
-#include <drivers/lowFrequencyClock.h>
 #include <drivers/counter.h>
+#include <drivers/lowFreqClockRaw.h>
 
 /*
  * !!! Include RTCx_IRQHandler here so that it overrides default handler.
@@ -54,8 +54,10 @@ void LongClock::start() {
 	/*
 	 * RTC requires LFC started, but doesn't know how to start it.
 	 * And doesn't know details about which it is (LFXO or LFRC)
+	 * !!! Not checking LowFreqClockRaw::isRunning()
+	 * i.e. only that it will eventually be running.
 	 */
-	assert(LowFrequencyClock::isRunning());
+	assert(LowFreqClockRaw::isStarted());
 
 	resetToNearZero();
 	// Later, a user (say SleepSyncAgent) can reset again
@@ -158,7 +160,7 @@ OSTime LongClock::osClockNowTime() {
  * - AND Counter is started (enabled to count LFClock)
  */
 bool LongClock::isOSClockRunning(){
-	return ( LowFrequencyClock::isRunning() and Counter::isTicking() );
+	return ( LowFreqClockRaw::isRunning() and Counter::isTicking() );
 }
 
 /*
