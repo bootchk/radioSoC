@@ -6,8 +6,8 @@
 
 // From platform lib e.g. nRF5x or SiLAB
 #include <drivers/hfClock.h>
-#include <drivers/lowFreqClockRaw.h>
 #include <drivers/nvic.h>
+#include <drivers/lowFreqClockCoordinated.h>
 
 
 
@@ -19,6 +19,7 @@
 
 
 // include so it overrides default handler
+// has not effect if MULTIPROTOCOL defined
 #include "../iRQHandlers/powerClockIRQHandler.cpp"
 
 
@@ -51,20 +52,20 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 	Nvic::enablePowerClockIRQ();
 
 	// Convenient to register callback for HF clock here also.
-	LowFreqClockRaw::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
+	LowFreqClockCoordinated::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
 
-	LowFreqClockRaw::enableInterruptOnStarted();
-	LowFreqClockRaw::configureXtalSource();
+	LowFreqClockCoordinated::enableInterruptOnStarted();
+	LowFreqClockCoordinated::configureXtalSource();
 	// assert source is LFXO
 
 	// We start LFXO.  LFRC starts anyway, first, but doesn't generate LFCLOCKSTARTED?
-	LowFreqClockRaw::start();
+	LowFreqClockCoordinated::start();
 
 	// Race: must sleep before LFCLOCKSTARTED event comes.  Takes .25 seconds for LFXO.  Takes .6mSec for LFRC.
 
 	Sleeper::sleepUntilEvent(ReasonForWake::LFClockStarted);
 
-	assert(LowFreqClockRaw::isRunning());
+	assert(LowFreqClockCoordinated::isRunning());
 
 	// Enable Counter to start counting ticks of LFClock
 	LongClock::start();

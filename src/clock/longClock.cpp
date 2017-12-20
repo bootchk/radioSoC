@@ -9,7 +9,11 @@
 
 // platform lib
 #include <drivers/counter.h>
+#ifdef MULTIPROTOCOL
+#include <drivers/lowFreqClockCoordinated.h>
+#else
 #include <drivers/lowFreqClockRaw.h>
+#endif
 
 /*
  * !!! Include RTCx_IRQHandler here so that it overrides default handler.
@@ -54,10 +58,14 @@ void LongClock::start() {
 	/*
 	 * RTC requires LFC started, but doesn't know how to start it.
 	 * And doesn't know details about which it is (LFXO or LFRC)
-	 * !!! Not checking LowFreqClockRaw::isRunning()
+	 * !!! Not checking LowFreqClock<foo>::isRunning()
 	 * i.e. only that it will eventually be running.
 	 */
+#ifdef MULTIPROTOCOL
+	assert(LowFreqClockCoordinated::isStarted());
+#else
 	assert(LowFreqClockRaw::isStarted());
+#endif
 
 	resetToNearZero();
 	// Later, a user (say SleepSyncAgent) can reset again
@@ -160,7 +168,11 @@ OSTime LongClock::osClockNowTime() {
  * - AND Counter is started (enabled to count LFClock)
  */
 bool LongClock::isOSClockRunning(){
+#ifdef MULTIPROTOCOL
+	return ( LowFreqClockCoordinated::isRunning() and Counter::isTicking() );
+#else
 	return ( LowFreqClockRaw::isRunning() and Counter::isTicking() );
+#endif
 }
 
 /*
