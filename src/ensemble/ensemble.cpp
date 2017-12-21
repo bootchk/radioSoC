@@ -84,7 +84,7 @@ bool Ensemble::isPacketCRCValid()          { return Radio::isPacketCRCValid(); }
 void Ensemble::startup() {
 
 	// enable this first so it has time to ramp up
-	// FIXME
+	// FIXME DCDC
 	/*
 	 * This should be conditionally compiled for whether board has DCDC components?  e.g. Waveshare
 	 * The behaviour of the power supply when board has no LC components is not specified.

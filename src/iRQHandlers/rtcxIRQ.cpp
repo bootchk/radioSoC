@@ -18,13 +18,18 @@
  * Binding must be "C" to override default handler.
  */
 
+/*
+ * Choice of RTC here: use RTC1 because RTC0 reserved for Softdevice
+ */
+
+
 extern "C" {
 
-void RTC0_IRQHandler();
+void RTC1_IRQHandler();
 
 __attribute__ ((interrupt ("IRQ")))
 void
-RTC0_IRQHandler(void)
+RTC1_IRQHandler(void)
 {
 	// Source event: Counter overflow
 	LongClock::longClockISR();

@@ -5,9 +5,9 @@
 #include "sleeper.h"
 
 // From platform lib e.g. nRF5x or SiLAB
-#include <drivers/lowFrequencyClock.h>
 #include <drivers/hfClock.h>
 #include <drivers/nvic.h>
+#include <drivers/lowFreqClockCoordinated.h>
 
 
 
@@ -19,6 +19,7 @@
 
 
 // include so it overrides default handler
+// has not effect if MULTIPROTOCOL defined
 #include "../iRQHandlers/powerClockIRQHandler.cpp"
 
 
@@ -51,25 +52,50 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 	Nvic::enablePowerClockIRQ();
 
 	// Convenient to register callback for HF clock here also.
-	LowFrequencyClock::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
+	LowFreqClockCoordinated::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
 
-	LowFrequencyClock::enableInterruptOnStarted();
-	LowFrequencyClock::configureXtalSource();
+	LowFreqClockCoordinated::enableInterruptOnStarted();
+	LowFreqClockCoordinated::configureXtalSource();
 	// assert source is LFXO
 
 	// We start LFXO.  LFRC starts anyway, first, but doesn't generate LFCLOCKSTARTED?
-	LowFrequencyClock::start();
+	LowFreqClockCoordinated::start();
 
 	// Race: must sleep before LFCLOCKSTARTED event comes.  Takes .25 seconds for LFXO.  Takes .6mSec for LFRC.
 
 	Sleeper::sleepUntilEvent(ReasonForWake::LFClockStarted);
 
-	assert(LowFrequencyClock::isRunning());
+	assert(LowFreqClockCoordinated::isRunning());
 
-	// Finally, enable Counter to start counting ticks of LFClock
+	// Enable Counter to start counting ticks of LFClock
 	LongClock::start();
 
+	// Disable interrupt since it may conflict with SD and other uses.
+	// After CLOCKSTARTED interrupt, we don't expect (or can) receive other events/interrupts
+	Nvic::disablePowerClockIRQ();
+
 }
+
+
+void ClockFacilitator::startLongClockNoWaitUntilRunning() {
+	/*
+	 * Assume someone else (SD) started LF clock
+	 *
+	 * Here we "request" it, so it won't stop if others (SD) release it.
+	 */
+	// TODO
+	// Enable Counter to start counting ticks of LFClock
+	LongClock::start();
+}
+
+
+
+
+bool ClockFacilitator::isLongClockRunning() {
+	// delegate
+	return LongClock::isOSClockRunning();
+}
+
 
 
 void ClockFacilitator::startHFClockWithSleepConstantExpectedDelay(OSTime delay){

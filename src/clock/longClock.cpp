@@ -8,15 +8,19 @@
 #include "timer.h"
 
 // platform lib
-#include <drivers/lowFrequencyClock.h>
 #include <drivers/counter.h>
+#ifdef MULTIPROTOCOL
+#include <drivers/lowFreqClockCoordinated.h>
+#else
+#include <drivers/lowFreqClockRaw.h>
+#endif
 
 /*
- * !!! Include RTC0_IRQHandler here so that it overrides default handler.
+ * !!! Include RTCx_IRQHandler here so that it overrides default handler.
  * If you just leave it as a separate file,
  * it doesn't resolve any symbols and so linker does not link it in
  */
-#include "../iRQHandlers/rtc0IRQ.cpp"
+#include "../iRQHandlers/rtcxIRQ.cpp"
 
 /*
  * Private data.
@@ -54,8 +58,14 @@ void LongClock::start() {
 	/*
 	 * RTC requires LFC started, but doesn't know how to start it.
 	 * And doesn't know details about which it is (LFXO or LFRC)
+	 * !!! Not checking LowFreqClock<foo>::isRunning()
+	 * i.e. only that it will eventually be running.
 	 */
-	assert(LowFrequencyClock::isRunning());
+#ifdef MULTIPROTOCOL
+	assert(LowFreqClockCoordinated::isStarted());
+#else
+	assert(LowFreqClockRaw::isStarted());
+#endif
 
 	resetToNearZero();
 	// Later, a user (say SleepSyncAgent) can reset again
@@ -72,7 +82,7 @@ void LongClock::start() {
 	// Docs don't say this can't be done while counter is running
 	Counter::configureOverflowInterrupt();
 	// assert overflow interrupt is enabled in device
-	// assert RTC0_IRQ is enabled (for counter and timers)
+	// assert RTCx_IRQ is enabled (for counter and timers)
 	// mostSignificantBits will increment on overflow
 
 	// assert prescaler is default of 0, i.e. 30uSec tick
@@ -158,8 +168,11 @@ OSTime LongClock::osClockNowTime() {
  * - AND Counter is started (enabled to count LFClock)
  */
 bool LongClock::isOSClockRunning(){
-	return LowFrequencyClock::isRunning();
-	// TODO AND counter started
+#ifdef MULTIPROTOCOL
+	return ( LowFreqClockCoordinated::isRunning() and Counter::isTicking() );
+#else
+	return ( LowFreqClockRaw::isRunning() and Counter::isTicking() );
+#endif
 }
 
 /*

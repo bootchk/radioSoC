@@ -1,10 +1,15 @@
 
+/*
+ * This uses POWERCLOCK device, restricted by Softdevice
+ */
+
+
+#ifndef MULTIPROTOCOL
+
+
 // platform lib
+#include <drivers/lowFreqClockRaw.h>
 #include <drivers/powerComparator.h>
-#include <drivers/lowFrequencyClock.h>
-
-
-
 
 
 // C so overrides weak handler, without C++ name mangling
@@ -48,12 +53,18 @@ POWER_CLOCK_IRQHandler() {
 	 */
 	PowerComparator::powerISR();
 
-	LowFrequencyClock::clockISR();
+#ifndef MULTIPROTOCOL
+	LowFreqClockRaw::clockISR();
+#else
+	LowFreqClockCoordinated::clockISR();
+#endif
 }
 
 
 
 
-}
+}	// C
+
+#endif
 
 

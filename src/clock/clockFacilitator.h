@@ -12,7 +12,7 @@
  * - HfClock (just an oscillator, no counting).  No dependencies but delays or sleeps until running.
  *
  *
- * LongClock and Timers depend on RTC0 (Counter and CompareRegisters) depends on LowFrequencyClock.
+ * LongClock and Timers depend on a RTC (Counter and CompareRegisters) depends on LowFrequencyClock.
  * Starting requires IRQ enabled.
  *
  * Radio requires HfClock.
@@ -24,8 +24,17 @@ public:
 	 * Start LongClock and insure it is running so Timers can be started.
 	 * Blocks.
 	 * Varied duration.
+	 * Cannot be used with SD since uses interrupt on blocked device PowerClock.
 	 */
 	static void startLongClockWithSleepUntilRunning();
+
+	/*
+	 * Start LongClock without ensuring it is running.
+	 */
+	static void startLongClockNoWaitUntilRunning();
+
+	static bool isLongClockRunning();
+
 
 	/*
 	 * Start HfClock.

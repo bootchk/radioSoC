@@ -79,7 +79,7 @@ void assertNeverUsedDevicesOff() {
 	// Pending flags prevent sleep even if interrupts disabled
 	//NVIC_ClearPendingIRQ(FPU_IRQn);
 	assert( ! NVIC_GetPendingIRQ(RADIO_IRQn));
-	assert( ! NVIC_GetPendingIRQ(RTC0_IRQn));
+	assert( ! NVIC_GetPendingIRQ(RTC1_IRQn));
 	assert( ! NVIC_GetPendingIRQ(POWER_CLOCK_IRQn));
 	assert( ! NVIC_GetPendingIRQ(ADC_IRQn));
 

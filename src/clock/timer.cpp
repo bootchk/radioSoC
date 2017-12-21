@@ -15,7 +15,7 @@
 namespace {
 /*
  * RTC device has three compare registers, each generating event/interrupt.
- * All the events are handled by one ISR (RTC0_ISRHandler)
+ * All the events are handled by one ISR (RTC1_ISRHandler)
  * This class owns a facade on the counter registers, and a knows a callback for each's interrupt.
  * Callback is also used as a flag for 'started'
  */
@@ -61,7 +61,7 @@ void Timer::configureCompareRegisterForTimer(TimerIndex index, OSTime timeout){
 	 * Thus currentCount can get stale, and we must accommodate.
 	 */
 	/*
-	 * RTC0 is 24-bit timer.
+	 * RTC is 24-bit timer.
 	 * Value is computed in 32-bit math.
 	 * We don't need need modulo 24-bit math (mask with 0xFFFFFF)
 	 * because the HW of the comparator only reads the lower 24-bits (effectively masks with 0xFFFFFF).
@@ -93,10 +93,10 @@ void Timer::configureCompareRegisterForTimer(TimerIndex index, OSTime timeout){
 		Timer::expire(index);
 		/*
 		 * Pend interrupt.
-		 * Since the RTC0_IRQ is always enabled, this will generate immediate jump to ISR.
+		 * Since the RTCx_IRQ is always enabled, this will generate immediate jump to ISR.
 		 * ISR will see the expired timer, and handle it, even though no event from compare register.
 		 */
-		Nvic::pendRTC0Interrupt();
+		Nvic::pendRTC1Interrupt();
 	}
 	else {
 		/*
@@ -159,7 +159,7 @@ void Timer::timerISR() {
 	}
 	else {
 		/*
-		 * When we get here, the First Timer has NOT expired but the RTC0 IRQ was called.
+		 * When we get here, the First Timer has NOT expired but the RTC IRQ was called.
 		 * Thus it must be another Timer (compare register match) or Counter overflow.
 		 * First Timer is unique: used for a sleep loop.
 		 * If it is active, it will have woken by whatever event generated this interrupt.
@@ -201,7 +201,7 @@ void Timer::start(
 	 */
 	assert(timeout < MaxTimeout);
 	assert(index < CountTimerInstances);
-	// assert RTC0_IRQ enabled (enabled earlier for Counter, and stays enabled.
+	// assert RTCx_IRQ enabled (enabled earlier for Counter, and stays enabled.
 
 	// Not legal to start Timer already started and not timed out or canceled.
 	if (isStarted(index)) {
@@ -231,7 +231,7 @@ void Timer::unexpire(TimerIndex index) { _expired[index] = false; }
 bool Timer::isExpired(TimerIndex index) { return _expired[index]; }
 
 /*
- * This is called from RTC0_IRQHandler, with interrupts disabled.
+ * This is called from RTCx_IRQHandler, with interrupts disabled.
  * The underlying CompareRegister has matched.
  * The underlying CompareRegister has already been disabled and event cleared.
  */
