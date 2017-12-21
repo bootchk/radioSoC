@@ -189,7 +189,7 @@ void Sleeper::cancelTimeout(){
 
 
 
-void Sleeper::sleepUntilEvent(ReasonForWake reason){
+void Sleeper::sleepUntilSpecificEvent(ReasonForWake reason){
 	/*
 	 * sleep until IRQ signals started event.
 	 * !!! Other interrupts (brownout, clock overflow, led Timer 2 etc. may wake the sleep.)

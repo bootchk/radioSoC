@@ -5,6 +5,7 @@
 
 
 /*
+ * Sleep while Softdevice disabled/not used.
  *
  * Responsibilities:
  * - sleep the system (wake on timeout or other event.)
@@ -71,9 +72,14 @@ public:
 	static void cancelTimeout();
 
 	/*
-	 * Sleep until one specific event, ignoring all other events.
+	 * Sleep until one specific event, ignoring and sleeping through all other events.
 	 */
-	static void sleepUntilEvent(ReasonForWake);
+	static void sleepUntilSpecificEvent(ReasonForWake);
+
+	/*
+	 * Sleep until any event.
+	 */
+	static void sleepUntilEvent();	// Not implemented?
 
 	// Not in-lined, used by external libraries
 	static void setReasonForWake(ReasonForWake);	// not always used, internally

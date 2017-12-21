@@ -41,7 +41,7 @@ void hfClockStartedCallback() {
 }
 
 
-
+#ifndef MULTIPROTOCOL
 void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	/*
@@ -75,17 +75,19 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 	Nvic::disablePowerClockIRQ();
 
 }
+#endif
+
 
 
 void ClockFacilitator::startLongClockNoWaitUntilRunning() {
 	/*
-	 * Assume someone else (SD) started LF clock
-	 *
-	 * Here we "request" it, so it won't stop if others (SD) release it.
+	 * LongClock requires LF clock running.
+	 * LF clock module must be init.
 	 */
-	// TODO
-	// Enable Counter to start counting ticks of LFClock
+	LowFreqClockCoordinated::init();
+	LowFreqClockCoordinated::start();
 	LongClock::start();
+	// assert LongClock will begin ticking soon
 }
 
 
@@ -150,7 +152,7 @@ void ClockFacilitator::startHFXOAndSleepUntilRunning() {
 	 */
 
 	// Blocking
-	Sleeper::sleepUntilEvent(ReasonForWake::HFClockStarted);
+	Sleeper::sleepUntilSpecificEvent(ReasonForWake::HFClockStarted);
 
 	// assert ISR cleared event.
 
