@@ -19,17 +19,19 @@
  */
 
 /*
- * Choice of RTC here: use RTC1 because RTC0 reserved for Softdevice
+ * Choice of RTC here: use RTC1 or 2 because RTC0 reserved for Softdevice
+ * NRF52 use RTC2
+ * NRF51 use RTC1
  */
 
 
 extern "C" {
 
-void RTC1_IRQHandler();
+void RTC2_IRQHandler();
 
 __attribute__ ((interrupt ("IRQ")))
 void
-RTC1_IRQHandler(void)
+RTC2_IRQHandler(void)
 {
 	// Source event: Counter overflow
 	LongClock::longClockISR();

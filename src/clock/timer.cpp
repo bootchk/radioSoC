@@ -15,7 +15,7 @@
 namespace {
 /*
  * RTC device has three compare registers, each generating event/interrupt.
- * All the events are handled by one ISR (RTC1_ISRHandler)
+ * All the events are handled by one ISR (RTCx_ISRHandler)
  * This class owns a facade on the counter registers, and a knows a callback for each's interrupt.
  * Callback is also used as a flag for 'started'
  */
@@ -96,7 +96,7 @@ void Timer::configureCompareRegisterForTimer(TimerIndex index, OSTime timeout){
 		 * Since the RTCx_IRQ is always enabled, this will generate immediate jump to ISR.
 		 * ISR will see the expired timer, and handle it, even though no event from compare register.
 		 */
-		Nvic::pendRTC1Interrupt();
+		Nvic::pendLFTimerInterrupt();
 	}
 	else {
 		/*
