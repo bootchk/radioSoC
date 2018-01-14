@@ -7,8 +7,8 @@
 // platform lib e.g. nRF5x
 #include <drivers/radio/radio.h>
 
-#include <drivers/hfClock.h>
-#include <drivers/nvic.h>
+#include <drivers/oscillators/hfClock.h>
+#include <drivers/nvic/nvic.h>
 #include <drivers/powerSupply.h>
 
 

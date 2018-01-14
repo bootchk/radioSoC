@@ -8,7 +8,7 @@
 
 
 // platform lib
-#include <drivers/lowFreqClockRaw.h>
+#include <drivers/oscillators/lowFreqClockRaw.h>
 #include <drivers/powerComparator.h>
 
 

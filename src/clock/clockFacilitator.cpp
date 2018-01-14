@@ -5,9 +5,10 @@
 #include "sleeper.h"
 
 // From platform lib e.g. nRF5x or SiLAB
-#include <drivers/hfClock.h>
-#include <drivers/nvic.h>
-#include <drivers/lowFreqClockCoordinated.h>
+#include <drivers/oscillators/hfClock.h>
+#include <drivers/oscillators/lowFreqClockCoordinated.h>
+#include <drivers/nvic/nvic.h>
+
 
 
 

@@ -7,9 +7,9 @@
 #include "longClock.h"
 
 // platform lib
-#include <drivers/nvic.h>
-#include <drivers/compareRegister.h>
-#include <drivers/compareRegArray.h>
+#include <drivers/nvic/nvic.h>
+#include <drivers/clock/compareRegister.h>
+#include <drivers/clock/compareRegArray.h>
 
 
 namespace {

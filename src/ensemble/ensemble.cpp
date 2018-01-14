@@ -7,7 +7,7 @@
 #include "../radio/radio.h"
 
 // platform lib
-#include <drivers/hfClock.h>
+#include <drivers/oscillators/hfClock.h>
 #include <drivers/powerSupply.h>
 
 

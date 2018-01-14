@@ -7,7 +7,7 @@
 //#include "../drivers/mcu.h"
 //#include "../drivers/nvic.h"
 #include <drivers/mcu.h>
-#include <drivers/nvic.h>
+#include <drivers/nvic/nvic.h>
 
 #include "../services/customFlash.h"
 

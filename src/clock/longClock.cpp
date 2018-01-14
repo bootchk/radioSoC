@@ -8,9 +8,9 @@
 #include "timer.h"
 
 // platform lib
-#include <drivers/counter.h>
+#include <drivers/clock/counter.h>
 #ifdef MULTIPROTOCOL
-#include <drivers/lowFreqClockCoordinated.h>
+#include <drivers/oscillators/lowFreqClockCoordinated.h>
 #else
 #include <drivers/lowFreqClockRaw.h>
 #endif
