@@ -18,15 +18,15 @@
  * Binding must be "C" to override default handler.
  */
 
-/*
- * Choice of RTC here: use RTC1 or 2 because RTC0 reserved for Softdevice
- * NRF52 use RTC2
- * NRF51 use RTC1
- */
+// From platform lib e.g. nRF5x or SiLAB
+// Choose RTC instance
+#include <drivers/hwConfig.h>
+
 
 
 extern "C" {
 
+#ifdef LFTimerUseRTC2
 void RTC2_IRQHandler();
 
 __attribute__ ((interrupt ("IRQ")))
@@ -49,5 +49,9 @@ RTC2_IRQHandler(void)
 	 * they will still trigger an interrupt and this handler will be called again.
 	 */
 }
+
+#else
+#error "no RTCx_IRQ"
+#endif
 
 }	// extern "C"
