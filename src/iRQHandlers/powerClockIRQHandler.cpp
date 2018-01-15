@@ -4,7 +4,7 @@
  */
 
 
-#ifndef MULTIPROTOCOL
+#ifndef SOFTDEVICE_PRESENT
 
 
 // platform lib
@@ -53,7 +53,7 @@ POWER_CLOCK_IRQHandler() {
 	 */
 	PowerComparator::powerISR();
 
-#ifndef MULTIPROTOCOL
+#ifndef SOFTDEVICE_PRESENT
 	LowFreqClockRaw::clockISR();
 #else
 	LowFreqClockCoordinated::clockISR();

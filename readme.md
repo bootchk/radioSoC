@@ -32,6 +32,17 @@ LOGGING  Whether LOGGING is potent.
 
 Several build configurations implement logging using Segger RTT.  For these configurations, the RTTLogger::log() methods are potent.  In other build configurations, calls to those methods do nothing (conditionally compiled by LOGGING macro var.)  Since Segger RTT is platform independent, it is compiled in at this level.  However, the project currently uses Segger RTT files provided by one platform's SDK, which have been modified to include platform dependent include files.  Thus the build configuration is NOT platform independent, for now.
 
+SOFTDEVICE_PRESENT	Whether library is compatible with Softdevice.  Same symbol as used in NRF_SDK
+
+Multiprotocol
+-
+
+SOFTDEVICE_PRESENT usually means "sequential multiprotocol" i.e. alternate between using the Softdevice for Bluetooth protocol and implementing your own protocol.
+
+Using Softdevice means the implementation is restricted: can't define some ISR's and thus can't conveniently use interrupts, but must poll or just wait for events.
+
+Historically, the NRF51 builds were not SOFTDEVICE_PRESENT.  Now the NRF52 builds are always SOFTDEVICE_PRESENT.
+
 
 Build configs
 -

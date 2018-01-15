@@ -42,7 +42,7 @@ void hfClockStartedCallback() {
 }
 
 
-#ifndef MULTIPROTOCOL
+#ifndef SOFTDEVICE_PRESENT
 void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	/*
@@ -53,20 +53,20 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 	Nvic::enablePowerClockIRQ();
 
 	// Convenient to register callback for HF clock here also.
-	LowFreqClockCoordinated::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
+	LowFreqClockRaw::registerCallbacks(lfClockStartedCallback, hfClockStartedCallback);
 
-	LowFreqClockCoordinated::enableInterruptOnStarted();
-	LowFreqClockCoordinated::configureXtalSource();
+	LowFreqClockRaw::enableInterruptOnStarted();
+	LowFreqClockRaw::configureXtalSource();
 	// assert source is LFXO
 
 	// We start LFXO.  LFRC starts anyway, first, but doesn't generate LFCLOCKSTARTED?
-	LowFreqClockCoordinated::start();
+	LowFreqClockRaw::start();
 
 	// Race: must sleep before LFCLOCKSTARTED event comes.  Takes .25 seconds for LFXO.  Takes .6mSec for LFRC.
 
-	Sleeper::sleepUntilEvent(ReasonForWake::LFClockStarted);
+	Sleeper::sleepUntilSpecificEvent(ReasonForWake::LFClockStarted);
 
-	assert(LowFreqClockCoordinated::isRunning());
+	assert(LowFreqClockRaw::isRunning());
 
 	// Enable Counter to start counting ticks of LFClock
 	LongClock::start();
@@ -121,7 +121,7 @@ void ClockFacilitator::startHFClockWithSleepConstantExpectedDelay(OSTime delay){
 	Sleeper::sleepDuration(delay);
 
 	/*
-	 * !!! Not unsure HFXO is stably running.
+	 * !!! Not ensure HFXO is stably running.
 	 * We waited a constant time that is expected, but not guaranteed for HFXO to be running.
 	 * The constant time might depend on measurements of actual board implementations of crystal network.
 	 */

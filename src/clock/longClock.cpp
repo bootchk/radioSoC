@@ -9,10 +9,10 @@
 
 // platform lib
 #include <drivers/clock/counter.h>
-#ifdef MULTIPROTOCOL
+#ifdef SOFTDEVICE_PRESENT
 #include <drivers/oscillators/lowFreqClockCoordinated.h>
 #else
-#include <drivers/lowFreqClockRaw.h>
+#include <drivers/oscillators/lowFreqClockRaw.h>
 #endif
 
 /*
@@ -61,7 +61,7 @@ void LongClock::start() {
 	 * !!! Not checking LowFreqClock<foo>::isRunning()
 	 * i.e. only that it will eventually be running.
 	 */
-#ifdef MULTIPROTOCOL
+#ifdef SOFTDEVICE_PRESENT
 	assert(LowFreqClockCoordinated::isStarted());
 #else
 	assert(LowFreqClockRaw::isStarted());
@@ -168,7 +168,7 @@ OSTime LongClock::osClockNowTime() {
  * - AND Counter is started (enabled to count LFClock)
  */
 bool LongClock::isOSClockRunning(){
-#ifdef MULTIPROTOCOL
+#ifdef SOFTDEVICE_PRESENT
 	return ( LowFreqClockCoordinated::isRunning() and Counter::isTicking() );
 #else
 	return ( LowFreqClockRaw::isRunning() and Counter::isTicking() );
