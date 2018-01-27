@@ -41,7 +41,15 @@ SOFTDEVICE_PRESENT usually means "sequential multiprotocol" i.e. alternate betwe
 
 Using Softdevice means the implementation is restricted: can't define some ISR's and thus can't conveniently use interrupts, but must poll or just wait for events.
 
-Historically, the NRF51 builds were not SOFTDEVICE_PRESENT.  Now the NRF52 builds are always SOFTDEVICE_PRESENT.
+Historically, the NRF51 builds were not SOFTDEVICE_PRESENT.  
+Now there are two NRF52 builds:
+
+    Debug52 not SD
+    Debug52wSD SOFTDEVICE_PRESENT.
+
+Debug52 uses only nRF5x
+
+Debug52wSD uses nRF5x (but not LowFreqClockRaw) and instead uses libNRFDrivers and its LowFreqClockCoordinated
 
 
 Build configs

@@ -10,8 +10,10 @@
 // platform lib
 #include <drivers/clock/counter.h>
 #ifdef SOFTDEVICE_PRESENT
-#include <drivers/oscillators/lowFreqClockCoordinated.h>
+// from libNRFDrivers
+#include <lowFreqClockCoordinated.h>
 #else
+// from nRF5x
 #include <drivers/oscillators/lowFreqClockRaw.h>
 #endif
 

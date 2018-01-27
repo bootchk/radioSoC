@@ -6,8 +6,13 @@
 
 // From platform lib e.g. nRF5x or SiLAB
 #include <drivers/oscillators/hfClock.h>
-#include <drivers/oscillators/lowFreqClockCoordinated.h>
 #include <drivers/nvic/nvic.h>
+#ifdef SOFTDEVICE_PRESENT
+// from libNRFDrivers
+#include <lowFreqClockCoordinated.h>
+#else
+#include <drivers/oscillators/lowFreqClockRaw.h>
+#endif
 
 
 
@@ -76,9 +81,9 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 	Nvic::disablePowerClockIRQ();
 
 }
-#endif
 
 
+#else
 
 void ClockFacilitator::startLongClockNoWaitUntilRunning() {
 	/*
@@ -91,7 +96,7 @@ void ClockFacilitator::startLongClockNoWaitUntilRunning() {
 	// assert LongClock will begin ticking soon
 }
 
-
+#endif
 
 
 bool ClockFacilitator::isLongClockRunning() {
