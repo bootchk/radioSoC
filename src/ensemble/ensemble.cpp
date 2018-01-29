@@ -37,8 +37,7 @@ void Ensemble::init(MsgReceivedCallback aCallback, RadioUseCase* aRadioUseCase) 
 	assert(! HfCrystalClock::isRunning());	// xtal not running
 
 	// On some platforms, it stays configured until mcu is reset.
-	// TODO rename configureProtocol
-	Radio::configure();
+	Radio::configureForSleepSync();
 
 	setRadioUseCase(aRadioUseCase);
 
@@ -57,7 +56,7 @@ void Ensemble::setRadioUseCase(RadioUseCase* aRadioUseCase){
 
 
 // The only member that needs configuration is Radio
-bool Ensemble::isConfigured(){ return Radio::isConfigured(); }
+bool Ensemble::isConfigured(){ return Radio::isConfiguredForSleepSync(); }
 
 
 bool Ensemble::isLowPower() {
@@ -127,7 +126,7 @@ void Ensemble::startup() {
 	log("<hfclock start\n");
 	*/
 
-	assert(Radio::isConfigured());
+	assert(Radio::isConfiguredForSleepSync());
 }
 
 void Ensemble::shutdown() {
@@ -180,7 +179,7 @@ void Ensemble::stopReceiving() {
 
 void Ensemble::transmitStaticSynchronously(){
 	assert(Radio::isPowerOn());
-	// also must be configured
+	assert(Radio::isConfiguredForSleepSync());
 
 	Radio::transmitStaticSynchronously();
 }

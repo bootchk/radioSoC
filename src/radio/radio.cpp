@@ -186,7 +186,7 @@ void Radio::dispatchPacketCallback() {
 
 
 
-void Radio::configure()
+void Radio::configureForSleepSync()
 {
 	// Not require radio device power on (that bit just resets config to default.)
 
@@ -197,7 +197,7 @@ void Radio::configure()
 	 * not ensure callback not nullptr: must set else radio might receive but not relay packet on
 	 * not ensure HFXO is started, which radio needs
 	 */
-	assert(isConfigured());
+	assert(isConfiguredForSleepSync());
 }
 
 

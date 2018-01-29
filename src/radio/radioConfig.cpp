@@ -17,6 +17,7 @@
  *
  * D. Default (POR) configuration of radio is non-functional (No packetPtr, etc.)
  * You MUST configure it.
+ * Also, Softdevice may reset radio and its configuration
  */
 
 
@@ -26,10 +27,9 @@ using namespace RadioData;
 //#define LONG_MESSAGE 1
 #define MEDIUM_MESSAGE 1
 
-
 namespace {
-   // POR resets configuration of radio
-   bool isConfiguredState = false;
+// Remember distinct signature of radio configuration for SleepSync protocol
+uint32_t configuredSignature;
 }
 
 
@@ -67,13 +67,21 @@ void Radio::configurePhysicalProtocol() {
 
 	// Other parameters are defaulted, possible set later by RadioUseCase
 
+	configuredSignature = device.configurationSignature();
+
 	// Default mode i.e. bits per second
 	assert(device.frequency() == FrequencyIndex);
-	isConfiguredState = true;
 }
 
 
-bool Radio::isConfigured() { return isConfiguredState; }
+/*
+ * Implementation is NOT a local state variable,
+ * but a sampling test of the radio's registers.
+ * Reset (toggling the NRF_RADIO->POWER register)
+ */
+bool Radio::isConfiguredForSleepSync() {
+	return configuredSignature == device.configurationSignature();
+}
 
 
 void Radio::configureXmitPower(TransmitPowerdBm dBm) {

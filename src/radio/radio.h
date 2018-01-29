@@ -158,11 +158,6 @@ public:
 	static void radioISR();
 
 	/*
-	 * Configure protocol.  Other configuration required before each session.
-	 */
-	static void configure();
-
-	/*
 	 * Set callback for all physical messages received.
 	 * Callback is usually to another protocol layer, not necessarily to app layer.
 	 */
@@ -180,10 +175,18 @@ public:
 
 
 	/*
+	 * Configure protocol: SleepSync.
+	 * Other configuration required before each session (data buffer).
+	 * Not generic: specific to SleepSync protocol.
+	 */
+	static void configureForSleepSync();
+	static bool isConfiguredForSleepSync();
+	/*
 	 * Configure parameters of physical protocol: freq, addr, CRC, bitrate, etc
 	 */
-	static bool isConfigured();
 	static void configurePhysicalProtocol();
+
+
 
 	static void configureXmitPower(TransmitPowerdBm power);
 	static TransmitPowerdBm getXmitPower();
