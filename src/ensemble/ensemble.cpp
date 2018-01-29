@@ -32,14 +32,11 @@ namespace {
 
 
 
-void Ensemble::init(MsgReceivedCallback aCallback, RadioUseCase* aRadioUseCase) {
+void Ensemble::init(MsgReceivedCallback aCallback) {
 
 	assert(! HfCrystalClock::isRunning());	// xtal not running
 
-	// On some platforms, it stays configured until mcu is reset.
-	Radio::configureForSleepSync();
 
-	setRadioUseCase(aRadioUseCase);
 
 	Radio::setMsgReceivedCallback(aCallback);
 }
@@ -48,6 +45,17 @@ void Ensemble::init(MsgReceivedCallback aCallback, RadioUseCase* aRadioUseCase) 
 void Ensemble::setRadioUseCase(RadioUseCase* aRadioUseCase){
 	activeUseCase = aRadioUseCase;
 	assert(activeUseCase!=nullptr);
+
+	/*
+	 * Configuration changes when use case changes.
+	 *
+	 * Multiprotocol i.e. different use case means configuration is changed.
+	 *
+	 * Platform dependent but generally:
+	 *    - stays configured until mcu is POR.
+	 *    - OR until radio power is toggled (to the default config.)
+	 */
+	Radio::configureForSleepSync();
 
 	// Apply persistent but changeable on the fly parameters
 	activeUseCase->applyToRadio();

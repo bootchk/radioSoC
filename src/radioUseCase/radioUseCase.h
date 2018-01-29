@@ -24,6 +24,8 @@
 
 // TODO fix getters return values from RadioDevice
 
+// TODO contain protocol also
+
 /*
  * Not a pure class singleton: instances exist.
  */
