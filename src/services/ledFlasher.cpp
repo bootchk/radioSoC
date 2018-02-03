@@ -11,10 +11,16 @@
 
 namespace {
 
+// for scheduled flash, read by ledOnCallback
+unsigned int _amount;
+unsigned int _ordinal;
+
 /*
- * Callback from timer, keep it short.
+ * Callbacks from timer, keep them short.
  * The timer interrupt wakes the mcu if was sleeping.
  */
+
+
 void ledOffCallback(TimerInterruptReason reason) {
 	// We don't callback for Overflow or other timers
 	assert(reason == SleepTimerCompare);
@@ -23,6 +29,39 @@ void ledOffCallback(TimerInterruptReason reason) {
 	LEDService::switchLED(1, false);
 	// Timer cancels itself
 }
+
+/*
+ * Called at time to toggle LED on.
+ */
+void ledOnCallback(TimerInterruptReason reason) {
+	// We don't callback for Overflow or other timers
+	assert(reason == SleepTimerCompare);
+
+	// Timer just went off, must cancel it
+	// since we need timer for off
+	Timer::cancel(Second);
+
+	LEDFlasher::flashLEDByAmount(_ordinal, _amount);
+}
+
+/*
+ * LED has exclusive use of Second timer
+ */
+void startTimerToTurnLEDOff(OSTime timeout) {
+	Timer::start(
+			Second,
+			timeout,
+			ledOffCallback
+	);
+}
+void startTimerToTurnLEDOn(OSTime timeout) {
+	Timer::start(
+			Second,
+			timeout,
+			ledOnCallback
+	);
+}
+
 
 } // namespace
 
@@ -52,10 +91,18 @@ void LEDFlasher::flashLEDByAmount(unsigned int ordinal, unsigned int amount){
 	// Calculate timeout in units ticks from amount units
 	OSTime timeout = amount * TicksPerFlashAmount;
 
-	// start timer to turn LED off
-	Timer::start(
-			Second,
-			timeout,
-			ledOffCallback
-			);
+	startTimerToTurnLEDOff(timeout);
 }
+
+
+void LEDFlasher::scheduleFlashLEDByAmount(unsigned int ordinal, unsigned int amount, unsigned int ticks){
+
+	// Remember stuff
+	_ordinal = ordinal;
+	_amount = amount;
+
+	// We check amount later
+
+	startTimerToTurnLEDOn(ticks);
+}
+

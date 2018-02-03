@@ -76,4 +76,10 @@ public:
 	 * Units are multiples of least visible time.
 	 */
 	static void flashLEDByAmount(unsigned int ordinal, unsigned int amount);
+
+
+	/*
+	 * Schedule flash.
+	 */
+	static void scheduleFlashLEDByAmount(unsigned int ordinal, unsigned int amount, unsigned int ticks);
 };
