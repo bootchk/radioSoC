@@ -37,9 +37,7 @@ void ledOnCallback(TimerInterruptReason reason) {
 	// We don't callback for Overflow or other timers
 	assert(reason == SleepTimerCompare);
 
-	// Timer just went off, must cancel it
-	// since we need timer for off
-	Timer::cancel(Second);
+	// Timer just went off, it is not in use
 
 	LEDFlasher::flashLEDByAmount(_ordinal, _amount);
 }

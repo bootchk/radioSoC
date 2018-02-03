@@ -19,8 +19,22 @@ namespace {
  * This class owns a facade on the counter registers, and a knows a callback for each's interrupt.
  * Callback is also used as a flag for 'started'
  */
+
+
 TimerCallback timerCallback[2];
+
+/*
+ * _isInUse does not imply not expired
+ */
+bool _isInUse[2];
+
+/*
+ * Flag for recent expiration.
+ * false does not imply _isInUse
+ * true does not imply _isInUse ?
+ */
 bool _expired[2];
+
 
 #ifdef TODO
 /*
@@ -181,6 +195,9 @@ void Timer::initTimers() {
 
 	_expired[0] = false;
 	_expired[1] = false;
+
+	_isInUse[0] = false;
+	_isInUse[1] = false;
 }
 
 
@@ -209,6 +226,7 @@ void Timer::start(
 		return;	// No error result, must be tested with assertions enabled.
 	}
 
+	_isInUse[index] = true;
 	timerCallback[index] = aTimeoutCallback;
 	unexpire(index);
 
@@ -217,12 +235,12 @@ void Timer::start(
 }
 
 bool Timer::isStarted(TimerIndex index) {
-	return ! (timerCallback[index] == nullptr);
+	return _isInUse[index];
 }
 
 void Timer::stop(TimerIndex index) {
-	timerCallback[index] = nullptr;
-	_expired[index] = false;
+	_isInUse[index] = false;
+	// _expired[index] = false;
 }
 
 
@@ -236,16 +254,24 @@ bool Timer::isExpired(TimerIndex index) { return _expired[index]; }
  * The underlying CompareRegister has already been disabled and event cleared.
  */
 void Timer::handleExpiration(TimerIndex index) {
+
+	/*
+	 * Stop timer first, so callback can reuse timer.
+	 */
+	stop(index);
+
 	/*
 	 * Callback with reason: TimerExpired
 	 * TODO not the correct reason for all Timers??
+	 *
+	 * This is still in interrupt context.
+	 * Callback may generate more interrupts.
 	 */
 	timerCallback[index](SleepTimerCompare);	// call callback
 
-	Timer::stop(index);
 	/*
-	 * Assert signal sent and Timer is stopped.
-	 * Assert callback signal won't be sent again (is nullptr, and _expired==false)
+	 * Assert signal sent (callback) and Timer is stopped.
+	 * Assert signal won't be sent again
 	 */
 }
 
