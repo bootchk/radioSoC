@@ -15,6 +15,8 @@ namespace {
 unsigned int _amount;
 unsigned int _ordinal;
 
+
+
 /*
  * Callbacks from timer, keep them short.
  * The timer interrupt wakes the mcu if was sleeping.
