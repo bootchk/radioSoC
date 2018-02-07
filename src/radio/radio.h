@@ -252,7 +252,7 @@ public:
 	 */
 	static bool isPacketCRCValid();
 	static LongTime timeOfArrival();
-    static int receivedSignalStrength();
+    static unsigned int receivedSignalStrength();
 
 
 // FUTURE to anon namespace

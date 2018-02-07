@@ -82,6 +82,7 @@ bool Ensemble::isLowPower() {
 bool Ensemble::isRadioInUse() 			   { return Radio::isInUse(); }
 BufferPointer Ensemble::getBufferAddress() { return Radio::getBufferAddress(); }
 bool Ensemble::isPacketCRCValid()          { return Radio::isPacketCRCValid(); }
+unsigned int Ensemble::getRSSI()          { return Radio::receivedSignalStrength(); }
 
 
 

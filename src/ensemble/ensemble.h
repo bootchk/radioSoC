@@ -71,8 +71,10 @@ public:
 	// Non-blocking, but lag (deadtime) for rampup until can hear
 	static void startReceiving();
 
+	// Attributes of the most recently received packet
 	static bool isPacketCRCValid();
 	static BufferPointer getBufferAddress();
+	static unsigned int getRSSI();
 
 	static void stopReceiving();
 
