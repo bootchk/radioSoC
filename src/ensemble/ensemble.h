@@ -44,7 +44,7 @@
  */
 // XXX make ensemble own radio.  Currently, other code calls radio methods.
 
-typedef void (*MsgReceivedCallback)();
+typedef void (*MsgReceivedCallback)(void);
 
 
 class Ensemble {
