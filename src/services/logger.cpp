@@ -24,12 +24,12 @@ void RTTLogger::log(const char* aString) {
 
 //I had trouble with this being undefined in linker, name mangled to logPK...
 void RTTLogger::log(uint8_t value){
-	(void) SEGGER_RTT_printf(BUFFER_INDEX, "x%02x", value);
+	(void) SEGGER_RTT_printf(BUFFER_INDEX, "x%02x ", value);
 }
 
 
 void RTTLogger::log(uint32_t value){
-	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%u", value);
+	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%u ", value);
 }
 
 void RTTLogger::log(uint64_t value ){
@@ -43,7 +43,7 @@ void RTTLogger::log(uint64_t value ){
 
 	// Print on one line
 	(void) SEGGER_RTT_printf(BUFFER_INDEX, "x%04x", *(((uint32_t*) &value) + 1)  );	// MS word
-	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%04x", value);	// LS word and newline
+	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%04x ", value);	// LS word and space
 
 }
 
