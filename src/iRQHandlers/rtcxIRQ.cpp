@@ -26,13 +26,22 @@
 
 extern "C" {
 
-#ifdef LFTimerUseRTC2
+
 void RTC2_IRQHandler();
 
+// Hook to a RTC interrupts
 __attribute__ ((interrupt ("IRQ")))
 void
-RTC2_IRQHandler(void)
+#if LFTimerUseRTC2 == 1
+   RTC2_IRQHandler(void)
+#elif LFTimerUseRTC1 == 1
+    RTC1_IRQHandler(void)
+#else
+#error "no RTCx_IRQ"
+#endif
 {
+
+
 	// Source event: Counter overflow
 	LongClock::longClockISR();
 
@@ -50,8 +59,5 @@ RTC2_IRQHandler(void)
 	 */
 }
 
-#else
-#error "no RTCx_IRQ"
-#endif
 
 }	// extern "C"
