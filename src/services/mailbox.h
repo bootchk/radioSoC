@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../platformTypes.h"  // WorkPayload
+#include "../platformTypes.h"  // MailContents
 
 /*
  * Simple mailbox:
@@ -21,18 +21,18 @@
 
 
 class Mailbox {
-	WorkPayload item = 0;
+	MailContents item = 0;
 	bool isItem = false;
 
 public:
 	// Does nothing if mailbox full
-	void tryPut(WorkPayload item);
+	void tryPut(MailContents item);
 
 	// Requires mailbox not full
-	void put(WorkPayload item);
+	void put(MailContents item);
 
 	// fetch first mail in box (if queued)
-	WorkPayload fetch();
+	MailContents fetch();
 
 	bool isMail();
 };

@@ -14,11 +14,11 @@
  */
 
 
-void Mailbox::tryPut(WorkPayload aItem){
+void Mailbox::tryPut(MailContents aItem){
 	if (!isMail()) put(aItem);
 }
 
-void Mailbox::put(WorkPayload aItem){
+void Mailbox::put(MailContents aItem){
 	// FUTURE Thread safe: atomic
 
 	assert(! isItem);	// Require mailbox not full
@@ -27,11 +27,11 @@ void Mailbox::put(WorkPayload aItem){
 	isItem = true;
 }
 
-WorkPayload Mailbox::fetch(){
+MailContents Mailbox::fetch(){
 	assert(isItem);	// require mailbox not empty
 
 	// Thread safe: copy item before deleting from queue
-	WorkPayload result = item;
+	MailContents result = item;
 	isItem = false;
 	return result;
 }

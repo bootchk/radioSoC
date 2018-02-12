@@ -34,13 +34,13 @@ typedef uint32_t OSTime;
 typedef uint64_t SystemID;	// lower 6 btyes
 
 
-// TODO only MailBox uses.  Make it more general, don't mention SyncAgent.
+
 /*
- * Work delivered by SyncAgent to and from app.
+ * Mail delivered by SyncAgent to and from app.
  *
  * Currently an instance of primitive type.
  */
-typedef uint8_t WorkPayload;
+typedef unsigned char MailContents;
 
 
 
