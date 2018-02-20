@@ -24,15 +24,18 @@ class Mailbox {
 	MailContents item = 0;
 	bool isItem = false;
 
-public:
-	// Does nothing if mailbox full
-	void tryPut(MailContents item);
-
-	// Requires mailbox not full
+	// Requires !isFull
 	void put(MailContents item);
+
+
+public:
+	// Does nothing if isFull
+	bool tryPut(MailContents item);
 
 	// fetch first mail in box (if queued)
 	MailContents fetch();
 
 	bool isMail();
+
+	bool isFull();
 };

@@ -14,21 +14,27 @@
  */
 
 
-void Mailbox::tryPut(MailContents aItem){
-	if (!isMail()) put(aItem);
+bool Mailbox::tryPut(MailContents aItem){
+	if (!isFull()) {
+		put(aItem);
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 void Mailbox::put(MailContents aItem){
 	// FUTURE Thread safe: atomic
 
-	assert(! isItem);	// Require mailbox not full
+	assert(! isFull());	// Require
 
 	item = aItem;
 	isItem = true;
 }
 
 MailContents Mailbox::fetch(){
-	assert(isItem);	// require mailbox not empty
+	assert(isMail());	// require
 
 	// Thread safe: copy item before deleting from queue
 	MailContents result = item;
@@ -36,6 +42,7 @@ MailContents Mailbox::fetch(){
 	return result;
 }
 
-bool Mailbox::isMail(){
-	return isItem;
-}
+bool Mailbox::isMail(){  return isItem; }
+
+// Since only one item, any is full
+bool Mailbox::isFull(){  return isItem; }
