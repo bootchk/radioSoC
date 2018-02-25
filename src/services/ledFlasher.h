@@ -48,6 +48,9 @@ private:
 
 
 public:
+
+	static unsigned int amountInTicks(unsigned int amountInMinFlashes);
+
 	/*
 	 * Min and max FlashAmount
 	 */
@@ -61,9 +64,6 @@ public:
 	static const unsigned int MaxFlashAmount = Timer::MaxTimeout / TicksPerFlashAmount;
 
 
-
-	static void init();
-
 	/*
 	 * No effect if ordinal out of range defined by boards.h
 	 */
@@ -76,6 +76,7 @@ public:
 	 * Units are multiples of least visible time.
 	 */
 	static void flashLEDByAmount(unsigned int ordinal, unsigned int amount);
+
 
 
 	/*

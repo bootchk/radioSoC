@@ -9,6 +9,7 @@
 
 
 
+
 namespace {
 
 // for scheduled flash, read by ledOnCallback
@@ -44,6 +45,7 @@ void ledOnCallback(TimerInterruptReason reason) {
 	LEDFlasher::flashLEDByAmount(_ordinal, _amount);
 }
 
+
 /*
  * LED has exclusive use of Second timer
  */
@@ -76,11 +78,6 @@ void LEDFlasher::flashLEDByAmount(unsigned int ordinal, unsigned int amount){
 	// assert LEDService initialized
 	// assert TimerService initialized
 
-	// Check range
-	assert(amount>=MinFlashAmount);
-	// Clamp to max
-	if (amount > MaxFlashAmount )  amount = MaxFlashAmount;
-
 
 	// Return if already flashing.
 	if (Timer::isStarted(Second)) {	return; }
@@ -88,10 +85,7 @@ void LEDFlasher::flashLEDByAmount(unsigned int ordinal, unsigned int amount){
 
 	LEDService::switchLED(ordinal, true);
 
-	// Calculate timeout in units ticks from amount units
-	OSTime timeout = amount * TicksPerFlashAmount;
-
-	startTimerToTurnLEDOff(timeout);
+	startTimerToTurnLEDOff(amountInTicks(amount));
 }
 
 
@@ -104,5 +98,20 @@ void LEDFlasher::scheduleFlashLEDByAmount(unsigned int ordinal, unsigned int amo
 	// We check amount later
 
 	startTimerToTurnLEDOn(ticks);
+}
+
+
+
+
+unsigned int LEDFlasher::amountInTicks(unsigned int amountInMinFlashes) {
+	unsigned int candidateAmount = amountInMinFlashes;
+
+	// Check range
+	assert(amountInMinFlashes>=MinFlashAmount);
+	// Clamp to max
+	if (amountInMinFlashes > MaxFlashAmount )  candidateAmount = MaxFlashAmount;
+
+	// Calculate timeout in units ticks from amount units
+	return candidateAmount * TicksPerFlashAmount;
 }
 

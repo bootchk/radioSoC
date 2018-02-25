@@ -9,6 +9,7 @@
 
 #include "services/mailbox.h"
 #include "services/ledFlasher.h"
+#include "services/ledFlasherTask.h"
 
 #include "ensemble/ensemble.h"
 #include "radio/radio.h"
