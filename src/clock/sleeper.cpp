@@ -68,12 +68,13 @@ void timerIRQCallback(TimerInterruptReason reason) {
 			// Do not overwrite highest priority: MsgReceived
 			break;
 		case ReasonForWake::SleepTimerExpired:
-			__asm("BKPT #0\n") ; // Break into the debugger, if it is running
-			assert(false);	// Timer was started again before handling/clearing previous expiration.
+			// Timer was started again before handling/clearing previous expiration.
+			MCU::breakIntoDebuggerOrHardfault();
+
 		case ReasonForWake::HFClockStarted:
 		case ReasonForWake::LFClockStarted:
-			__asm("BKPT #0\n") ; // Break into the debugger, if it is running
-			assert(false);	// Timer was started without clearing previous reasonForWake??
+			// Timer was started without clearing previous reasonForWake??
+			MCU::breakIntoDebuggerOrHardfault();
 		}
 		break;
 

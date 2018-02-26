@@ -14,9 +14,12 @@
 //#include <drivers/clock/compareRegister.h>
 
 #include <cassert>
+#include "logger.h"
+
 
 
 void LEDFlasherTask::init(uint32_t pin ) {
+
 
 
 	// EventTimer not need init but LFClock and RTC counter must be ticking
@@ -32,6 +35,9 @@ void LEDFlasherTask::init(uint32_t pin ) {
 	 */
 	uint32_t* taskAddress = PinTask::getTaskRegisterAddress();
 	uint32_t* eventAddress = EventTimer::getEventRegisterAddress();
+
+	RTTLogger::log(" eventTimer address: ");
+	RTTLogger::log((uint32_t) eventAddress);
 
 	EventToTaskSignal::connect(eventAddress,taskAddress);
 }
@@ -49,6 +55,7 @@ void LEDFlasherTask::flashLEDByAmount(unsigned int amount) {
 	// TODO is there any way to do this?
 
 	// toggle LED on
+	RTTLogger::log("LED on\n");
 	PinTask::startTask();
 
 	// start timer that will generate event connected via PPI to task which will toggle off
