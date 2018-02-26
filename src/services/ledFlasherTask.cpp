@@ -4,7 +4,10 @@
 
 #include "ledFlasher.h"	// amountInTicks
 #include "../clock/eventTimer.h"
-#include "drivers/pinTask.h"	// lib nRF5x
+
+// lib nRF5x
+#include "drivers/pinTask.h"
+#include "drivers/eventToTaskSignal.h"
 
 // lib nRF5x
 #include <drivers/clock/counter.h>
@@ -29,7 +32,8 @@ void LEDFlasherTask::init(uint32_t pin ) {
 	 */
 	uint32_t* taskAddress = PinTask::getTaskRegisterAddress();
 	uint32_t* eventAddress = EventTimer::getEventRegisterAddress();
-	// TODO PPI:
+
+	EventToTaskSignal::connect(eventAddress,taskAddress);
 }
 
 

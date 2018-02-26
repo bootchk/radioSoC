@@ -62,3 +62,7 @@ void EventTimer::stop() {
 	compareRegisters[EVENT_TIMER_INDEX].disableEventSignal();
 	// Not change compare register value
 }
+
+uint32_t* EventTimer::getEventRegisterAddress() {
+	return compareRegisters[EVENT_TIMER_INDEX].getEventRegisterAddress();
+}
