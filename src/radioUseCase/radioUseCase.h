@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../radio/radioTypes.h"
+#include "../radio/radioXmitPower.h"
 
 
 /*

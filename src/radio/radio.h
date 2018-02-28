@@ -2,7 +2,7 @@
 
 #include <inttypes.h>
 
-#include "radioTypes.h"
+#include "radioXmitPower.h"
 
 // platform lib e.g. nRF5x
 //#include <drivers/radio/radio.h>
