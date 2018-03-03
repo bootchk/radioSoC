@@ -55,7 +55,7 @@ void LEDFlasherTask::flashLEDByAmount(unsigned int amount) {
 	// TODO is there any way to do this?
 
 	// toggle LED on
-	RTTLogger::log("LED on\n");
+	// RTTLogger::log("LED on\n");
 	PinTask::startTask();
 
 	// start timer that will generate event connected via PPI to task which will toggle off
