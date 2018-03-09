@@ -5,9 +5,13 @@
 
 namespace {
 
-// shadow of value that radio owns
+/*
+ * shadow of value that radio owns
+ *
+ * A reset radio has power Plus0.
+ * Thus initial RadioUseCase shadow equals radio.
+ */
 TransmitPowerdBm power = TransmitPowerdBm::Plus0;
-
 }
 
 
