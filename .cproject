@@ -302,9 +302,9 @@
 				<macros>
 					<stringMacro name="SOC_SDK" type="VALUE_TEXT" value="/home/bootch/git/nRF5x"/>
 					<stringMacro name="MATH_SDK" type="VALUE_TEXT" value="/home/bootch/git/embeddedMath"/>
-					<stringMacro name="CMSIS_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_12.3.0"/>
-					<stringMacro name="PLATFORM_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_12.3.0"/>
-					<stringMacro name="RTT_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_12.3.0/external"/>
+					<stringMacro name="CMSIS_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_14.2.0_17b948a"/>
+					<stringMacro name="PLATFORM_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_14.2.0_17b948a"/>
+					<stringMacro name="RTT_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_14.2.0_17b948a/external"/>
 				</macros>
 				<externalSettings>
 					<externalSetting>
@@ -387,7 +387,8 @@
 									<listOptionValue builtIn="false" value="&quot;${PLATFORM_SDK}/components/device&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.567153525" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="NRF52"/>
+									<listOptionValue builtIn="false" value="NRF52832_XXAA"/>
+									<listOptionValue builtIn="false" value="NRF52_SERIES"/>
 									<listOptionValue builtIn="false" value="SOFTDEVICE_PRESENT"/>
 									<listOptionValue builtIn="false" value="LOGGING"/>
 								</option>
@@ -413,6 +414,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
