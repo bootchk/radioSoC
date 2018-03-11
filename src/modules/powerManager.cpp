@@ -69,7 +69,7 @@ bool PowerManager::isPowerExcess() {
 	// adc differs by family: NRF51 ADC, NRF52 SAADC
 	// There is no adc device common to both families
 	bool result;
-#ifdef NRF52
+#ifdef NRF52_SERIES
 	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
 	// result = false;
 
@@ -88,7 +88,7 @@ bool PowerManager::isPowerExcess() {
 
 bool PowerManager::isPowerNearExcess() {
 	bool result;
-#ifdef NRF52
+#ifdef NRF52_SERIES
 	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
 	// result = false;
 
@@ -110,11 +110,13 @@ bool PowerManager::isPowerNearExcess() {
 
 bool PowerManager::isPowerAboveUltraHigh(){
 	bool result;
-#ifdef NRF52
+#ifdef NRF52_SERIES
 	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
 #elif NRF51
 	ADCResult value = adc.getVccProportionTo255();
 	result = (value >= ADC::Result3_2V);
+#else
+#error "NRF52_SERIES or NRF51 not defined"
 #endif
 	return result;
 }
