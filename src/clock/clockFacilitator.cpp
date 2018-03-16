@@ -29,6 +29,7 @@
 #include "../iRQHandlers/powerClockIRQHandler.cpp"
 
 
+#ifndef SOFTDEVICE_PRESENT
 namespace {
 
 void lfClockStartedCallback() {
@@ -45,7 +46,7 @@ void hfClockStartedCallback() {
 }
 
 }
-
+#endif
 
 #ifndef SOFTDEVICE_PRESENT
 void ClockFacilitator::startLongClockWithSleepUntilRunning(){

@@ -5,6 +5,14 @@
 // platform lib e.g. nRF5x
 #include <drivers/adc.h>
 
+
+
+#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA) || defined(NRF51)
+#else
+#error "NRF51 or NRF52810_XXAA or NRF52832_XXAA not defined"
+#endif
+
+
 namespace {
 
 /*
@@ -69,7 +77,7 @@ bool PowerManager::isPowerExcess() {
 	// adc differs by family: NRF51 ADC, NRF52 SAADC
 	// There is no adc device common to both families
 	bool result;
-#ifdef NRF52_SERIES
+#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
 	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
 	// result = false;
 
@@ -80,15 +88,13 @@ bool PowerManager::isPowerExcess() {
 	// Need to use value smaller than 0xFF? say 3.4V
 	// This is fragile: must use >= since value never greater than ADC::Result3_6V
 	result = (value >= ADC::Result3_6V);
-#else
-#error "NRF51 or NRF52 not defined"
 #endif
 	return result;
 }
 
 bool PowerManager::isPowerNearExcess() {
 	bool result;
-#ifdef NRF52_SERIES
+#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
 	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
 	// result = false;
 
@@ -100,8 +106,6 @@ bool PowerManager::isPowerNearExcess() {
 	// This is fragile: must use >= since value never greater than ADC::Result3_6V
 	// TODO nearness a parameter defined elsewhere instead of here just 0.2V
 	result = (value >= ADC::Result3_4V);
-#else
-#error "NRF51 or NRF52 not defined"
 #endif
 	return result;
 }
@@ -110,13 +114,11 @@ bool PowerManager::isPowerNearExcess() {
 
 bool PowerManager::isPowerAboveUltraHigh(){
 	bool result;
-#ifdef NRF52_SERIES
+#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
 	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
 #elif NRF51
 	ADCResult value = adc.getVccProportionTo255();
 	result = (value >= ADC::Result3_2V);
-#else
-#error "NRF52_SERIES or NRF51 not defined"
 #endif
 	return result;
 }

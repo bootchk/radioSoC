@@ -137,7 +137,7 @@ bool isVddGreaterThanThresholdWithBrownoutDetection(PowerThreshold threshold) {
  * Called from ISR upon brownout.
  * Interrupts disabled, should be short.
  */
-void brownoutCallback() {
+void brownoutCallback(void) {
 
 	BrownoutRecorder::recordToFlash();
 
