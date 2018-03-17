@@ -15,7 +15,7 @@
 DeviceID System::ID() {
 	DeviceID result;
 
-	result = deviceID();
+	result = SystemProperties::deviceID();
 	// result upper bytes are all ones
 
 	// Mask off upper bytes, to match over-the-air length of 6 bytes.
