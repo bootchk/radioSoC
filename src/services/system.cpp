@@ -26,11 +26,14 @@ DeviceID System::ID() {
 }
 
 /*
- * For debugging, only the least significant byte of the above.
+ * For debugging, only the most significant byte of the above.
  * Typically it is unique enough for small swarms of radios.
  */
 uint8_t System::shortID() {
-	return (uint8_t) ID();
+	// LSB (uint8_t) ID();
+
+	// MSB: field is 48 bits, shift 40 bits right
+	return (uint8_t) (ID() >> 40);
 }
 
 
