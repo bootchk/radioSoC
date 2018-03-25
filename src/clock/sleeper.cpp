@@ -7,7 +7,7 @@
 #include <timeMath.h>
 #include "timer.h"
 
-// platform lib
+// platform lib nRF5x
 #include <drivers/mcu.h>
 
 
