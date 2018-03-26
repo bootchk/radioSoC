@@ -70,6 +70,10 @@ public:
 	// Called by LongClock.start()
 	static void initTimers();
 
+	/*
+	 * Called from the IRQ handler.
+	 * Many events may have occurred (clock overflow, and many compare register matches)
+	 */
 	static void timerISR();
 
 	static void start(

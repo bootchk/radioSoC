@@ -172,6 +172,9 @@ void Timer::timerISR() {
 		handleExpiration(First);
 	}
 	else {
+#define FIRST_TIMER_HAS_SLEEP_LOOP
+		/* Not used for RTC Task design */
+#ifdef FIRST_TIMER_HAS_SLEEP_LOOP
 		/*
 		 * When we get here, the First Timer has NOT expired but the RTC IRQ was called.
 		 * Thus it must be another Timer (compare register match) or Counter overflow.
@@ -183,6 +186,7 @@ void Timer::timerISR() {
 			timerCallback[First](OverflowOrOtherTimerCompare);
 		}
 	}
+#endif
 	if (isExpired(Second)) { handleExpiration(Second); }
 	// User of second timer doesn't sleep on it.
 
@@ -271,7 +275,9 @@ void Timer::handleExpiration(TimerIndex index) {
 
 	/*
 	 * Assert signal sent (callback) and Timer is stopped.
-	 * Assert signal won't be sent again
+	 * Assert signal won't be sent again.
+	 * However, compare registers will still generate match events if counter cycles (4 minutes)
+	 * and such events will wake any WEV.
 	 */
 }
 
