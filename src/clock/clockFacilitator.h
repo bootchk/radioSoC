@@ -21,6 +21,10 @@
 class ClockFacilitator {
 public:
 	/*
+	 * Long clock
+	 */
+
+	/*
 	 * Start LongClock and insure it is running so Timers can be started.
 	 * Blocks.
 	 * Varied duration.
@@ -35,6 +39,10 @@ public:
 
 	static bool isLongClockRunning();
 
+
+	/*
+	 * HFClock (HFXO crystal)
+	 */
 
 	/*
 	 * Start HfClock.
@@ -52,4 +60,8 @@ public:
 	 * HfCrystalClock takes about 1.2, 0.36 mSec to run stable depending on board design.
 	 */
 	static void startHFXOAndSleepUntilRunning();
+
+	static void startHFXONoWait();
+
+	static void stopHFXO();
 };

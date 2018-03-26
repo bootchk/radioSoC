@@ -168,3 +168,17 @@ void ClockFacilitator::startHFXOAndSleepUntilRunning() {
 	assert(HfCrystalClock::isRunning());
 }
 
+
+/*
+ * Not require not already started.
+ */
+void ClockFacilitator::startHFXONoWait() {
+	// Not enable interrupt
+	HfCrystalClock::start();
+
+	// Not ensure isRunning() since substantial delay e.g. 0.6mSec
+}
+
+void ClockFacilitator::stopHFXO() {
+	HfCrystalClock::stop();
+}
