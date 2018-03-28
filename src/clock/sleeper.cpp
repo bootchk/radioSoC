@@ -195,7 +195,7 @@ void Sleeper::sleepUntilSpecificEvent(ReasonForWake reason){
 	 * sleep until IRQ signals started event.
 	 * !!! Other interrupts (brownout, clock overflow, led Timer 2 etc. may wake the sleep.)
 	 * Other interrupts may increase time between start() and sleep().
-	 * The max start time is 360uSec NRF52,
+	 * The max start time is 360uSec nrf52,
 	 * so there should be plenty of time to get asleep before interrupt occurs.
 	 */
 
