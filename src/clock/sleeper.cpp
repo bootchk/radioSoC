@@ -154,7 +154,7 @@ void Sleeper::sleepUntilEventWithTimeout(OSTime timeout) {
 	 * To insure a sleep, you must either insure EventRegister is not set, or call this in a loop,
 	 * since MCU::sleep() will clear EventRegister.
 	 */
-	MCU::sleep();
+	MCU::sleepUntilEvent();
 	/*
 	 * awakened by event: received msg or timeout or other event.
 	 * !!! Other timer expirations may wake us.
@@ -205,7 +205,7 @@ void Sleeper::sleepUntilSpecificEvent(ReasonForWake reason){
 		 * Ignore other events from clock and other sources
 		 * e.g. timers for flashing LED's (whose interrupts will occur, but returns to this thread.)
 		 */
-		MCU::sleep();
+		MCU::sleepUntilEvent();
 		// TODO examine other reasons here and log abnormal ones such as brownout
 	}
 }

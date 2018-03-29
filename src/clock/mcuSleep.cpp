@@ -6,5 +6,9 @@
 
 
 void MCUSleep::untilAnyEvent() {
-	MCU::sleep();
+	MCU::sleepUntilEvent();
+}
+
+void MCUSleep::untilInterrupt() {
+	MCU::sleepUntilInterrupt();
 }

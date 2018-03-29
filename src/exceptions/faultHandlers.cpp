@@ -117,9 +117,9 @@ void sleepForeverInLowPower() {
 	powerOffPeripherals();
 
 	// Since there are no peripherals and no timer, this will sleep in very low power
-	// The only thing that can wake it is an interrupt signal on a pin.
+	// The only thing that can wake it is an interrupt signal on a pin (not an internal interrupt from device on SoC.)
 	while(true) {
-		MCU::sleep();
+		MCU::sleepUntilEvent();
 	}
 }
 
