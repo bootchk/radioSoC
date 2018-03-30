@@ -32,6 +32,10 @@ void RTTLogger::log(uint32_t value){
 	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%u ", value);
 }
 
+void RTTLogger::log(int32_t value){
+	(void) SEGGER_RTT_printf(BUFFER_INDEX, "%d ", value);
+}
+
 void RTTLogger::log(uint64_t value ){
 	// Print 64-bit int as two uint32-t on same line, hex notation
 	// FUTURE this should work, but it doesn't????
@@ -55,6 +59,7 @@ void RTTLogger::init() {}
 void RTTLogger::log(char const* aString) { (void) aString; }
 void RTTLogger::log(uint8_t value){ (void) value; }
 void RTTLogger::log(uint32_t value ){ (void) value; }
+void RTTLogger::log(int32_t value ){ (void) value; }
 void RTTLogger::log(uint64_t value ){ (void) value; }
 
 

@@ -33,6 +33,7 @@ public:
 	static void log(const char* aString);
 	static void log(uint8_t);
 	static void log(uint32_t);
+	static void log(int32_t);
 	static void log(uint64_t);
 };
 
