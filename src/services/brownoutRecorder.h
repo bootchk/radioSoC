@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 
-typedef unsigned int (*BrownoutCallback)();
+typedef unsigned int (*BrownoutCallback)(void);
 
 /*
  * Knows how to write important info to flash when brownout happens.
