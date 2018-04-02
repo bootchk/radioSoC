@@ -98,6 +98,7 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/clock/sleeper.cpp
    ${MY_SOURCE_DIR}/clock/timer.cpp
    ${MY_SOURCE_DIR}/clock/mcuSleep.cpp
+   ${MY_SOURCE_DIR}/clock/clockDuration.cpp
    ${MY_SOURCE_DIR}/ensemble/ensemble.cpp
    ${MY_SOURCE_DIR}/exceptions/faultHandlers.cpp
    ${MY_SOURCE_DIR}/exceptions/powerAssertions.cpp
