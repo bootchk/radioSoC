@@ -2,7 +2,7 @@
 #pragma once
 
 // embeddedMath
-#include <types.h>	// DeltaTime, LongTime
+#include <timeTypes.h>	// DeltaTime, LongTime
 
 
 

@@ -6,7 +6,7 @@
 #include "../platformTypes.h"	// OSTime
 
 // embeddedMath
-#include "types.h"    // LongTime
+#include <timeTypes.h>    // LongTime
 
 
 /*
