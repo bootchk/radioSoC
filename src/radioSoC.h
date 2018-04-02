@@ -6,6 +6,7 @@
 #include <clock/longClock.h>
 #include <clock/sleeper.h>
 #include <clock/clockFacilitator.h>
+#include <clock/clockDuration.h>
 
 #include "services/mailbox.h"
 #include "services/ledFlasher.h"

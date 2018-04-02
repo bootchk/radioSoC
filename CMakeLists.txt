@@ -47,22 +47,47 @@ set_target_properties( NRFDrivers PROPERTIES
 
 
 
+
+
 # library targets
 # Each specific to a chip
 # (It might be possible to build one library that works with all nRF52x chips?)
-add_library(radioSoC52810 "")
 
-set_target_properties( radioSoC52810
+add_library(radioSoC52810SD "")
+
+set_target_properties( radioSoC52810SD
     PROPERTIES
        CHIP "nrf52810e"
        SOFTDEVICE "s112"
        FLOAT_ABI "soft"
     )
-nRF5CheckTargetProperties(radioSoC52810)
-nRF5ConfigTargetByProperties(radioSoC52810)
+nRF5CheckTargetProperties(radioSoC52810SD)
+nRF5ConfigTargetByProperties(radioSoC52810SD)
 
 # enable seggerRTT logging to library
-target_compile_definitions(radioSoC52810 PUBLIC LOGGING)
+target_compile_definitions(radioSoC52810SD PUBLIC LOGGING)
+
+
+
+add_library(radioSoC52810NoSD "")
+
+set_target_properties( radioSoC52810NoSD
+    PROPERTIES
+       CHIP "nrf52810e"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(radioSoC52810NoSD)
+nRF5ConfigTargetByProperties(radioSoC52810NoSD)
+
+# enable seggerRTT logging to library
+target_compile_definitions(radioSoC52810NoSD PUBLIC 
+    LOGGING
+    TASKS)
+
+
+
+
 
 set(MY_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
 
@@ -72,6 +97,7 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/clock/longClock.cpp
    ${MY_SOURCE_DIR}/clock/sleeper.cpp
    ${MY_SOURCE_DIR}/clock/timer.cpp
+   ${MY_SOURCE_DIR}/clock/mcuSleep.cpp
    ${MY_SOURCE_DIR}/ensemble/ensemble.cpp
    ${MY_SOURCE_DIR}/exceptions/faultHandlers.cpp
    ${MY_SOURCE_DIR}/exceptions/powerAssertions.cpp
@@ -101,23 +127,46 @@ list(APPEND MY_SDK_SOURCE_LIST
    )
 
 
+
+
+
+# identical: SD or NoSD
 target_sources(
-    radioSoC52810
+    radioSoC52810SD
     PUBLIC
        "${MY_SOURCE_LIST}"
        "${MY_SDK_SOURCE_LIST}"
     )
     
-target_include_directories(radioSoC52810
+target_sources(
+    radioSoC52810NoSD
+    PUBLIC
+       "${MY_SOURCE_LIST}"
+       "${MY_SDK_SOURCE_LIST}"
+    )
+    
+# identical: SD or NoSD
+target_include_directories(radioSoC52810SD
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/src"
    )
-   
-target_link_libraries(radioSoC52810
+target_include_directories(radioSoC52810NoSD
+   PUBLIC
+       "${CMAKE_CURRENT_LIST_DIR}/src"
+   )
+
+
+# SD: references NRFDrivers
+target_link_libraries(radioSoC52810SD
    PUBLIC
        nRF5x52810
        embeddedMath
        NRFDrivers
+   )
+target_link_libraries(radioSoC52810NoSD
+   PUBLIC
+       nRF5x52810
+       embeddedMath
    )
     
 

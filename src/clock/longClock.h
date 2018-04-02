@@ -5,6 +5,9 @@
 
 #include "../platformTypes.h"	// OSTime
 
+// embeddedMath
+#include "types.h"    // LongTime
+
 
 /*
  * Thin wrapper around RTC device of Nordic nRF52/51.
@@ -69,10 +72,8 @@
 
 
 /*
- * Type that LongClock yields.  Only 56 bits are valid.
+ * LongClock yields type LongTime (see embeddedMath).  Only 56 bits are valid.
  */
-typedef uint64_t LongTime;
-
 
 
 

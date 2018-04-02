@@ -4,7 +4,7 @@
 #include "sleeper.h"
 
 // implementation
-#include <timeMath.h>
+#include "clockDuration.h"
 #include "timer.h"
 
 // platform lib nRF5x
@@ -233,7 +233,7 @@ void Sleeper::sleepDuration(OSTime duration) {
 		}
 		else {
 			// reasonForWake is not TimerExpired
-			remainingTimeout = TimeMath::clampedTimeDifferenceFromNow(endingTime);
+			remainingTimeout = ClockDuration::clampedTimeDifferenceFromNow(endingTime);
 			// continue next loop iteration
 		}
 		/*
