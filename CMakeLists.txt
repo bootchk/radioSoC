@@ -5,6 +5,7 @@ project (nRF5x C CXX)
 set(CMAKE_MODULE_PATH "/home/bootch/git/nRF5Cmake/")
 message(" Module path is ${CMAKE_MODULE_PATH}")
 
+cmake_policy(SET CMP0022 NEW)
 
 # environment (location of NRF_SDK and other tools)
 # i.e. file CMakeEnv.cmake on the MODULE_PATH
@@ -24,20 +25,29 @@ nRF5SetIncludePaths()
 # No SDK_SOURCES
 
 
+# add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
+
 # Imported libraries
 # Uses: nRF5x, embeddedMath, NRFDrivers (when SD)
+# conditionally import to alleviate already defined by higher projects using add_subdirectory
 
-add_library(nRF5x52810 STATIC IMPORTED)
-set_target_properties( nRF5x52810 
-	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/cmakeBuild/libnRF5x52810.a
+if (NOT TARGET nRF5x52)
+add_library(nRF5x52 STATIC IMPORTED)
+set_target_properties( nRF5x52
+    PROPERTIES
 	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
 	)
+# PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/cmakeBuild/libnRF5x52810.a
+endif()
 	
-add_library(embeddedMath STATIC IMPORTED)
-set_target_properties( embeddedMath PROPERTIES 
-   IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
-   INTERFACE_INCLUDE_DIRECTORIES /home/bootch/git/embeddedMath/src
-   )
+if (NOT TARGET embeddedMath52)
+add_library(embeddedMath52 STATIC IMPORTED)
+set_target_properties( embeddedMath52 PROPERTIES 
+  INTERFACE_INCLUDE_DIRECTORIES /home/bootch/git/embeddedMath/src
+  )
+#  IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
+endif()
+
 
 add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES 
@@ -50,6 +60,24 @@ set_target_properties( NRFDrivers PROPERTIES
 
 
 # library targets
+
+add_library(radioSoC52NoSD "")
+
+set_target_properties( radioSoC52NoSD
+    PROPERTIES
+       CHIP "nrf52832_xxaa"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(radioSoC52NoSD)
+nRF5ConfigTargetByProperties(radioSoC52NoSD)
+
+# enable seggerRTT logging to library
+target_compile_definitions(radioSoC52NoSD PUBLIC LOGGING)
+target_compile_definitions(radioSoC52NoSD PUBLIC TASKS)
+
+
+
 # Each specific to a chip
 # (It might be possible to build one library that works with all nRF52x chips?)
 
@@ -129,6 +157,12 @@ list(APPEND MY_SDK_SOURCE_LIST
 
 
 
+target_sources(
+    radioSoC52NoSD
+    PUBLIC
+       "${MY_SOURCE_LIST}"
+       "${MY_SDK_SOURCE_LIST}"
+    )
 
 
 # identical: SD or NoSD
@@ -147,6 +181,14 @@ target_sources(
     )
     
 # identical: SD or NoSD
+target_include_directories(radioSoC52NoSD
+   PUBLIC
+       "${CMAKE_CURRENT_LIST_DIR}/src"
+   )
+target_include_directories(radioSoC52810SD
+   PUBLIC
+       "${CMAKE_CURRENT_LIST_DIR}/src"
+   )
 target_include_directories(radioSoC52810SD
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/src"
@@ -157,6 +199,16 @@ target_include_directories(radioSoC52810NoSD
    )
 
 
+
+# Interface: not linked, but part of link interface
+
+# INTERFACE
+target_link_libraries(radioSoC52NoSD
+   PUBLIC
+       nRF5x52
+       embeddedMath52
+   )
+   
 # SD: references NRFDrivers
 target_link_libraries(radioSoC52810SD
    PUBLIC

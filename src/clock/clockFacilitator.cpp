@@ -26,7 +26,8 @@
 
 // include so it overrides default handler
 // has not effect if MULTIPROTOCOL defined
-#include "../iRQHandlers/powerClockIRQHandler.cpp"
+// #include "../iRQHandlers/powerClockIRQHandler.cpp"
+// April 2018 comment this out, make sure it still works
 
 
 #ifndef SOFTDEVICE_PRESENT
