@@ -123,7 +123,6 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/clock/clockFacilitator.cpp
    ${MY_SOURCE_DIR}/clock/eventTimer.cpp
    ${MY_SOURCE_DIR}/clock/longClock.cpp
-   ${MY_SOURCE_DIR}/clock/sleeper.cpp
    ${MY_SOURCE_DIR}/clock/timer.cpp
    ${MY_SOURCE_DIR}/clock/mcuSleep.cpp
    ${MY_SOURCE_DIR}/clock/clockDuration.cpp
@@ -148,6 +147,8 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/services/mailbox.cpp
    ${MY_SOURCE_DIR}/services/system.cpp
 )
+# Obsolete  ${MY_SOURCE_DIR}/clock/sleeper.cpp
+
 
 # Build RTT logging into library
 list(APPEND MY_SDK_SOURCE_LIST

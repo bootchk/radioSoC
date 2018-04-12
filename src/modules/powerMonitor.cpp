@@ -3,11 +3,8 @@
 
 // Used by brownoutCallback
 #include "../services/brownoutRecorder.h"
-#include "../clock/sleeper.h"
-
-
-// platform lib e.g. nRF5x
 #include <drivers/powerComparator.h>
+#include "../clock/sleeperObs.h"
 
 
 /*
@@ -153,7 +150,7 @@ void brownoutCallback(void) {
 	 *  Signal, if we were sleeping.
 	 */
 	// TODO prioritize
-	Sleeper::setReasonForWake(ReasonForWake::BrownoutWarning);
+	// Sleeper::setReasonForWake(ReasonForWake::BrownoutWarning);
 
 	// assert brownout ISR disables further brownout detection
 }

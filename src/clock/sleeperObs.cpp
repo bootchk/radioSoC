@@ -1,14 +1,12 @@
 
 #include <cassert>
 
-#include "sleeper.h"
-
-// implementation
 #include "clockDuration.h"
 #include "timer.h"
 
 // platform lib nRF5x
 #include <drivers/mcu.h>
+#include "sleeperObs.h"
 
 
 namespace {

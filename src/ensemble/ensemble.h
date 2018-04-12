@@ -54,7 +54,7 @@ public:
 	/*
 	 * Init ensemble members and configure Radio from RadioUseCase
 	 */
-	static void init(MsgReceivedCallback);
+	// Obsolete static void init(MsgReceivedCallback);
 
 	/*
 	 * Set use case, and apply it to Radio.

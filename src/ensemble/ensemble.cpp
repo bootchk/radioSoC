@@ -31,15 +31,13 @@ namespace {
 }
 
 
-
+#ifdef obsolete
 void Ensemble::init(MsgReceivedCallback aCallback) {
 
 	assert(! HfCrystalClock::isRunning());	// xtal not running
-
-
-
 	Radio::setMsgReceivedCallback(aCallback);
 }
+#endif
 
 
 void Ensemble::setRadioUseCase(RadioUseCase* aRadioUseCase){

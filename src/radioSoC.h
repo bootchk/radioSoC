@@ -4,7 +4,6 @@
 
 
 #include <clock/longClock.h>
-#include <clock/sleeper.h>
 #include <clock/clockFacilitator.h>
 #include <clock/clockDuration.h>
 
@@ -21,6 +20,7 @@
 #include "services/system.h"
 #include "services/customFlash.h"
 #include <services/brownoutRecorder.h>
+#include "clock/sleeperObs.h"
 
 #include "exceptions/faultHandlers.h"
 #include "exceptions/powerAssertions.h"

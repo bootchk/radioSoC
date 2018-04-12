@@ -2,11 +2,14 @@
 
 #include "clockFacilitator.h"
 
-#include "sleeper.h"
+#include "longClock.h"
 
-// From platform lib e.g. nRF5x or SiLAB
+// radioSoC
 #include <drivers/oscillators/hfClock.h>
 #include <drivers/nvic/nvic.h>
+
+//#include "sleeperObs.h"
+
 #ifdef SOFTDEVICE_PRESENT
 // from libNRFDrivers
 #include <lowFreqClockCoordinated.h>
@@ -29,12 +32,12 @@
 // #include "../iRQHandlers/powerClockIRQHandler.cpp"
 // April 2018 comment this out, make sure it still works
 
-
+#ifdef OBSOLETE
 #ifndef SOFTDEVICE_PRESENT
 namespace {
 
 void lfClockStartedCallback() {
-	Sleeper::setReasonForWake(ReasonForWake::LFClockStarted);
+	//Sleeper::setReasonForWake(ReasonForWake::LFClockStarted);
 }
 
 void hfClockStartedCallback() {
@@ -43,13 +46,61 @@ void hfClockStartedCallback() {
 	 * Assert that no other interrupts can come and change reasonForWake.
 	 * Otherwise, we should not set it directly, but prioritize it.
 	 */
-	Sleeper::setReasonForWake(ReasonForWake::HFClockStarted);
+	//Sleeper::setReasonForWake(ReasonForWake::HFClockStarted);
 }
 
+} // namespace
+#endif
+#endif
+
+
+
+bool ClockFacilitator::isLongClockRunning() {
+	// delegate
+	return LongClock::isOSClockRunning();
+}
+
+
+/*
+ * Not require not already started.
+ */
+void ClockFacilitator::startHFXONoWait() {
+	// Not enable interrupt
+	HfCrystalClock::start();
+
+	// Not ensure isRunning() since substantial delay e.g. 0.6mSec
+}
+
+void ClockFacilitator::stopHFXO() {
+	HfCrystalClock::stop();
+}
+
+
+
+#ifndef SOFTDEVICE_PRESENT
+
+// Raw is not SD compatable
+void ClockFacilitator::startLongClockNoWaitUntilRunning() {
+	LowFreqClockRaw::configureXtalSource();
+	// No interrupts or callbacks
+	LowFreqClockRaw::start();
+	LongClock::start();
+}
+#else
+void ClockFacilitator::startLongClockNoWaitUntilRunning() {
+	/*
+	 * LongClock requires LF clock running.
+	 * LF clock module must be init.
+	 */
+	LowFreqClockCoordinated::init();
+	LowFreqClockCoordinated::start();
+	LongClock::start();
+	// assert LongClock will begin ticking soon
 }
 #endif
 
-#ifndef SOFTDEVICE_PRESENT
+
+#ifdef OBSOLETE
 void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 	/*
@@ -84,27 +135,6 @@ void ClockFacilitator::startLongClockWithSleepUntilRunning(){
 
 }
 
-
-#else
-
-void ClockFacilitator::startLongClockNoWaitUntilRunning() {
-	/*
-	 * LongClock requires LF clock running.
-	 * LF clock module must be init.
-	 */
-	LowFreqClockCoordinated::init();
-	LowFreqClockCoordinated::start();
-	LongClock::start();
-	// assert LongClock will begin ticking soon
-}
-
-#endif
-
-
-bool ClockFacilitator::isLongClockRunning() {
-	// delegate
-	return LongClock::isOSClockRunning();
-}
 
 
 
@@ -168,18 +198,6 @@ void ClockFacilitator::startHFXOAndSleepUntilRunning() {
 
 	assert(HfCrystalClock::isRunning());
 }
+#endif
 
 
-/*
- * Not require not already started.
- */
-void ClockFacilitator::startHFXONoWait() {
-	// Not enable interrupt
-	HfCrystalClock::start();
-
-	// Not ensure isRunning() since substantial delay e.g. 0.6mSec
-}
-
-void ClockFacilitator::stopHFXO() {
-	HfCrystalClock::stop();
-}
