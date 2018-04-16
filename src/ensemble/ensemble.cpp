@@ -83,7 +83,7 @@ bool Ensemble::isPacketCRCValid()          { return Radio::isPacketCRCValid(); }
 unsigned int Ensemble::getRSSI()          { return Radio::receivedSignalStrength(); }
 
 
-
+#ifdef OBSOLETE
 /*
  * Startup must be called before StartReceiving or Transmit
  */
@@ -135,6 +135,8 @@ void Ensemble::startup() {
 
 	assert(Radio::isConfiguredForSleepSync());
 }
+#endif
+
 
 void Ensemble::shutdown() {
 	HfCrystalClock::stop();
