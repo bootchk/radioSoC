@@ -172,8 +172,6 @@ void Timer::timerISR() {
 		handleExpiration(First);
 	}
 	else {
-		/* Not used for RTC Task design */
-#ifndef TASKS
 		/*
 		 * When we get here, the First Timer has NOT expired but the RTC IRQ was called.
 		 * Thus it must be another Timer (compare register match) or Counter overflow.
@@ -184,7 +182,6 @@ void Timer::timerISR() {
 		if ( Timer::isStarted(First) ) {
 			timerCallback[First](OverflowOrOtherTimerCompare);
 		}
-#endif
 	}
 
 	if (isExpired(Second)) { handleExpiration(Second); }

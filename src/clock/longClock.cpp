@@ -5,7 +5,7 @@
 
 #include "longClock.h"
 
-#include "timer.h"
+//#include "timer.h"
 
 // platform lib
 #include <drivers/clock/counter.h>
@@ -92,7 +92,8 @@ void LongClock::start() {
 	Counter::start();
 
 	// This could be done elsewhere
-	Timer::initTimers();
+	// OLD Timer::initTimers();
+
 	// assert compareRegisters are configured by default to disabled interrupt w/ nullptr callbacks
 
 

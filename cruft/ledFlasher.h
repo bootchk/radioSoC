@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../clock/timer.h"	// MaxTimeout
+#include "../platformTypes.h"	// MaxTimeout
 #include "../modules/ledService.h"
 
 

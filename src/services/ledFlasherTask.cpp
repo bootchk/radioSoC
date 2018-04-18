@@ -2,7 +2,7 @@
 #include "ledFlasherTask.h"
 
 
-#include "ledFlasher.h"	// amountInTicks
+//#include "ledFlasher.h"	// amountInTicks
 #include "../clock/eventTimer.h"
 
 // lib nRF5x
@@ -44,6 +44,7 @@ void LEDFlasherTask::init(uint32_t pin ) {
 }
 
 
+
 void LEDFlasherTask::flashLEDByAmount(unsigned int amount) {
 	/*
 	 * assert initialized:
@@ -60,8 +61,21 @@ void LEDFlasherTask::flashLEDByAmount(unsigned int amount) {
 	PinTask::startSunkOnTask();
 
 	// start timer that will generate event connected via PPI to task which will toggle off
-	EventTimer::start(LEDFlasher::amountInTicks(amount));
+	EventTimer::start(LEDFlasherTask::amountInTicks(amount));
 
 	// Re enable one-shot connection to off task
 	EventToTaskSignal::enableOneShot();
+}
+
+
+unsigned int LEDFlasherTask::amountInTicks(unsigned int amountInMinFlashes) {
+	unsigned int candidateAmount = amountInMinFlashes;
+
+	// Check range
+	assert(amountInMinFlashes>=MinFlashAmount);
+	// Clamp to max
+	if (amountInMinFlashes > MaxFlashAmount )  candidateAmount = MaxFlashAmount;
+
+	// Calculate timeout in units ticks from amount units
+	return candidateAmount * TicksPerFlashAmount;
 }

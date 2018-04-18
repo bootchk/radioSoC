@@ -6,7 +6,7 @@
 
 // implementation uses lib radioSoC: LongClock and Timer
 #include <clock/longClock.h>
-#include <clock/timer.h>
+
 
 #include <cassert>
 

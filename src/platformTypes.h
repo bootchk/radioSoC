@@ -25,6 +25,11 @@
 
 typedef uint32_t OSTime;
 
+/*
+ * 24-bit max OSTime
+ */
+static const unsigned int MaxTimeout = 0xFFFFFF;
+
 
 /*
  * MAC id of radio, unique system/unit identifier.

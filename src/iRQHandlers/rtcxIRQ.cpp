@@ -1,6 +1,6 @@
 
 #include "../clock/longClock.h"
-#include "../clock/timer.h"
+#include "../clock/taskTimer.h"
 
 
 
@@ -28,6 +28,8 @@ extern "C" {
 
 
 void RTC2_IRQHandler();
+void RTC1_IRQHandler();
+
 
 // Hook to a RTC interrupts
 __attribute__ ((interrupt ("IRQ")))
@@ -46,7 +48,7 @@ void
 	LongClock::longClockISR();
 
 	// Source event: CompareRegister match
-	Timer::timerISR();
+	TaskTimer::timerISR();
 
 	/*
 	 * If we cleared any events, enough time (4 clock cycles) has elapsed

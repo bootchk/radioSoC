@@ -93,7 +93,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/external" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cruft|src/external" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -175,6 +175,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="cruft" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -293,7 +296,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/external/SEGGER_RTT.cpp|src/external/SEGGER_RTT_printf.cpp|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cruft|src/external/SEGGER_RTT.cpp|src/external/SEGGER_RTT_printf.cpp|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -417,7 +420,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cruft|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -540,7 +543,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/clock/sleeperObs.cpp|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cruft|src/clock/sleeperObs.cpp|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -665,7 +668,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="cruft|src/external/SEGGER_RTT_printf_12.3.cpp|src/external/SEGGER_RTT_12.3.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

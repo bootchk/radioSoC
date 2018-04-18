@@ -62,7 +62,6 @@ set_target_properties( NRFDrivers PROPERTIES
 # library targets
 
 add_library(radioSoC52NoSD "")
-
 set_target_properties( radioSoC52NoSD
     PROPERTIES
        CHIP "nrf52832_xxaa"
@@ -71,11 +70,19 @@ set_target_properties( radioSoC52NoSD
     )
 nRF5CheckTargetProperties(radioSoC52NoSD)
 nRF5ConfigTargetByProperties(radioSoC52NoSD)
-
-# enable seggerRTT logging to library
 target_compile_definitions(radioSoC52NoSD PUBLIC LOGGING)
-target_compile_definitions(radioSoC52NoSD PUBLIC TASKS)
 
+
+add_library(radioSoC52SD "")
+set_target_properties( radioSoC52SD
+    PROPERTIES
+       CHIP "nrf52832_xxaa"
+       SOFTDEVICE "s132"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(radioSoC52SD)
+nRF5ConfigTargetByProperties(radioSoC52SD)
+target_compile_definitions(radioSoC52SD PUBLIC LOGGING)
 
 
 # Each specific to a chip
@@ -109,9 +116,7 @@ nRF5CheckTargetProperties(radioSoC52810NoSD)
 nRF5ConfigTargetByProperties(radioSoC52810NoSD)
 
 # enable seggerRTT logging to library
-target_compile_definitions(radioSoC52810NoSD PUBLIC 
-    LOGGING
-    TASKS)
+target_compile_definitions(radioSoC52810NoSD PUBLIC LOGGING)
 
 
 
@@ -123,7 +128,7 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/clock/clockFacilitator.cpp
    ${MY_SOURCE_DIR}/clock/eventTimer.cpp
    ${MY_SOURCE_DIR}/clock/longClock.cpp
-   ${MY_SOURCE_DIR}/clock/timer.cpp
+   ${MY_SOURCE_DIR}/clock/taskTimer.cpp
    ${MY_SOURCE_DIR}/clock/mcuSleep.cpp
    ${MY_SOURCE_DIR}/clock/clockDuration.cpp
    ${MY_SOURCE_DIR}/ensemble/ensemble.cpp
@@ -141,13 +146,15 @@ list(APPEND MY_SOURCE_LIST
    ${MY_SOURCE_DIR}/radioUseCase/radioUseCase.cpp
    ${MY_SOURCE_DIR}/services/brownoutRecorder.cpp
    ${MY_SOURCE_DIR}/services/customFlash.cpp
-   ${MY_SOURCE_DIR}/services/ledFlasher.cpp
    ${MY_SOURCE_DIR}/services/ledFlasherTask.cpp
    ${MY_SOURCE_DIR}/services/logger.cpp
    ${MY_SOURCE_DIR}/services/mailbox.cpp
    ${MY_SOURCE_DIR}/services/system.cpp
 )
-# Obsolete  ${MY_SOURCE_DIR}/clock/sleeper.cpp
+# Obsolete, replaced by TaskTimer.cpp and LEDFlasherTask.cpp
+# ${MY_SOURCE_DIR}/clock/sleeper.cpp
+# ${MY_SOURCE_DIR}/clock/timer.cpp
+# ${MY_SOURCE_DIR}/services/ledFlasher.cpp
 
 
 # Build RTT logging into library
@@ -157,16 +164,21 @@ list(APPEND MY_SDK_SOURCE_LIST
    )
 
 
-
+# identical: SD or NoSD
 target_sources(
     radioSoC52NoSD
     PUBLIC
        "${MY_SOURCE_LIST}"
        "${MY_SDK_SOURCE_LIST}"
     )
+target_sources(
+    radioSoC52SD
+    PUBLIC
+       "${MY_SOURCE_LIST}"
+       "${MY_SDK_SOURCE_LIST}"
+    )
 
 
-# identical: SD or NoSD
 target_sources(
     radioSoC52810SD
     PUBLIC
@@ -183,6 +195,10 @@ target_sources(
     
 # identical: SD or NoSD
 target_include_directories(radioSoC52NoSD
+   PUBLIC
+       "${CMAKE_CURRENT_LIST_DIR}/src"
+   )
+target_include_directories(radioSoC52SD
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/src"
    )
@@ -211,6 +227,12 @@ target_link_libraries(radioSoC52NoSD
    )
    
 # SD: references NRFDrivers
+target_link_libraries(radioSoC52SD
+   PUBLIC
+       nRF5x52
+       embeddedMath52
+       NRFDrivers
+   )
 target_link_libraries(radioSoC52810SD
    PUBLIC
        nRF5x52810
