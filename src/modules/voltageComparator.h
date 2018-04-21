@@ -9,9 +9,10 @@
  * Compares voltage from an analog input pin to a reference voltage.
  */
 
+// !!! Order is important so that we don't flip the raw values:  0 means below whether from device Comparator or VoltageComparator
 enum class VCompareResult {
-	AboveRef,
-	BelowRef
+	BelowRef,
+	AboveRef
 };
 
 

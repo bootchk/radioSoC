@@ -7,18 +7,18 @@
 
 namespace {
 
-VCompareResult convertComparisonResult(bool result) {
-	if (result) return VCompareResult::AboveRef;
+VCompareResult convertComparisonResult(bool isAbove) {
+	if (isAbove) return VCompareResult::AboveRef;
 	else        return VCompareResult::BelowRef;
 }
 }
 
 VCompareResult VoltageComparator::compareToLowThreshold() {
-	bool intermediateResult = Comparator::initCompareAndShutdown(ComparatorReferenceVolts::V1_2);
-	return convertComparisonResult(intermediateResult);
+	bool isAbove = Comparator::initCompareAndShutdown(ComparatorReferenceVolts::V1_2);
+	return convertComparisonResult(isAbove);
 }
 
 VCompareResult VoltageComparator::compareToHighThreshold() {
-	bool intermediateResult = Comparator::initCompareAndShutdown(ComparatorReferenceVolts::V2_4);
-	return convertComparisonResult(intermediateResult);
+	bool isAbove = Comparator::initCompareAndShutdown(ComparatorReferenceVolts::V2_4);
+	return convertComparisonResult(isAbove);
 }
