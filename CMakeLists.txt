@@ -42,18 +42,20 @@ endif()
 	
 if (NOT TARGET embeddedMath52)
 add_library(embeddedMath52 STATIC IMPORTED)
-set_target_properties( embeddedMath52 PROPERTIES 
+set_target_properties( embeddedMath52 PROPERTIES
+  IMPORTED_LOCATION /home/bootch/git/embeddedMath/cmakeBuild/libembeddedMath52.a
   INTERFACE_INCLUDE_DIRECTORIES /home/bootch/git/embeddedMath/src
   )
-#  IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
+#  
 endif()
 
-
+if (NOT TARGET NRFDrivers)
 add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES 
-   IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a 
+   IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/cmakeBuild/libNRFDrivers.a 
    INTERFACE_INCLUDE_DIRECTORIES /home/bootch/git/libNRFDrivers/
    )
+endif()
 
 
 

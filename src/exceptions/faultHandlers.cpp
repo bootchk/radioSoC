@@ -7,7 +7,9 @@
 //#include "../drivers/mcu.h"
 //#include "../drivers/nvic.h"
 #include <drivers/mcu.h>
-#include <drivers/nvic/nvic.h>
+
+// !!! only for system reset, irregardless of SOFTDEVICE_PRESENT
+#include <drivers/nvic/nvicRaw.h>
 
 #include "../services/customFlash.h"
 

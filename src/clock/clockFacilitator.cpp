@@ -6,15 +6,18 @@
 
 // radioSoC
 #include <drivers/oscillators/hfClock.h>
-#include <drivers/nvic/nvic.h>
+
 
 //#include "sleeperObs.h"
 
 #ifdef SOFTDEVICE_PRESENT
 // from libNRFDrivers
 #include <lowFreqClockCoordinated.h>
+#include <nvicCoordinated.h>
 #else
+// nRF5x
 #include <drivers/oscillators/lowFreqClockRaw.h>
+#include <drivers/nvic/nvicRaw.h>
 #endif
 
 

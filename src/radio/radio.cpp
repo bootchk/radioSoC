@@ -2,13 +2,21 @@
 #include <cassert>
 
 #include "radio.h"
+
+#ifdef SOFTDEVICE_PRESENT
+// NRFDrivers
+#include <nvicCoordinated.h>
+#else
+// nRF5x
+#include <drivers/nvic/nvicRaw.h>
+#endif
+
 #include "radioData.h"
 
 // platform lib e.g. nRF5x
 #include <drivers/radio/radio.h>
 
 #include <drivers/oscillators/hfClock.h>
-#include <drivers/nvic/nvic.h>
 #include <drivers/powerSupply.h>
 
 
@@ -143,11 +151,19 @@ void Radio::clearEventForMsgReceivedInterrupt() { RadioData::device.clearDisable
  */
 void Radio::enableInterruptForMsgReceived() {
 	assert(!RadioData::device.isDisabledEventSet());	// else interrupt immediately???
-	Nvic::enableRadioIRQ();
+#ifdef SOFTDEVICE_PRESENT
+	NvicCoordinated::enableRadioIRQ();
+#else
+	NvicRaw::enableRadioIRQ();
+#endif
 	RadioData::device.enableInterruptForDisabledEvent();
 }
 void Radio::disableInterruptForMsgReceived() {
-	Nvic::disableRadioIRQ();
+#ifdef SOFTDEVICE_PRESENT
+	NvicCoordinated::disableRadioIRQ();
+#else
+	NvicRaw::disableRadioIRQ();
+#endif
 	RadioData::device.disableInterruptForDisabledEvent();
 }
 bool Radio::isEnabledInterruptForMsgReceived() {

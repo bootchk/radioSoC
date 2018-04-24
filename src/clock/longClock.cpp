@@ -5,16 +5,16 @@
 
 #include "longClock.h"
 
-//#include "timer.h"
-
 // platform lib
 #include <drivers/clock/counter.h>
 #ifdef SOFTDEVICE_PRESENT
-// from libNRFDrivers
-#include <lowFreqClockCoordinated.h>
+   // from libNRFDrivers
+   #include <lowFreqClockCoordinated.h>
+   #include <nvicCoordinated.h>
 #else
-// from nRF5x
-#include <drivers/oscillators/lowFreqClockRaw.h>
+   // from nRF5x
+   #include <drivers/oscillators/lowFreqClockRaw.h>
+   #include <drivers/nvic/nvicRaw.h>
 #endif
 
 /*
@@ -84,6 +84,11 @@ void LongClock::start() {
 	// Docs don't say this can't be done while counter is running
 	Counter::configureOverflowInterrupt();
 	// assert overflow interrupt is enabled in device
+#ifdef SOFTDEVICE_PRESENT
+	NvicCoordinated::enableLFTimerIRQ();
+#else
+	NvicRaw::enableLFTimerIRQ();
+#endif
 	// assert RTCx_IRQ is enabled (for counter and timers)
 	// mostSignificantBits will increment on overflow
 

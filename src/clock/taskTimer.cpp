@@ -6,10 +6,18 @@
 #include "../services/logger.h"
 #include "longClock.h"
 
-// platform lib
-#include <drivers/nvic/nvic.h>
+// platform lib nRF5x
 #include <drivers/clock/compareRegister.h>
 #include <drivers/clock/compareRegArray.h>
+
+#ifdef SOFTDEVICE_PRESENT
+   // from libNRFDrivers
+   #include <nvicCoordinated.h>
+#else
+   // from nRF5x
+   #include <drivers/nvic/nvicRaw.h>
+#endif
+
 
 #include <cassert>
 
@@ -183,7 +191,11 @@ void TaskTimer::configureCompareRegisterForTimer(TaskTimerIndex index, OSTime ti
 		 * When caller is a task, in ISR context, the interrupt will process when this task completes.
 		 * ISR will see the expired timer, and handle it, even though no event from compare register.
 		 */
-		Nvic::pendLFTimerInterrupt();
+#ifdef SOFTDEVICE_PRESENT
+		NvicCoordinated::pendLFTimerInterrupt();
+#else
+		NvicRaw::pendLFTimerInterrupt();
+#endif
 	}
 	else { // Guaranteed that CompareRegister will generate event and interrupt.
 	}
