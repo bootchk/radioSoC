@@ -3,13 +3,8 @@
 
 #include "radio.h"
 
-#ifdef SOFTDEVICE_PRESENT
-// NRFDrivers
-#include <nvicCoordinated.h>
-#else
-// nRF5x
-#include <drivers/nvic/nvicRaw.h>
-#endif
+// Sequential multiprotocol: use nvicRaw only when SD is disabled
+#include <drivers/nvic/nvicRaw.h>	// nRF5x
 
 #include "radioData.h"
 
@@ -148,22 +143,16 @@ void Radio::clearEventForMsgReceivedInterrupt() { RadioData::device.clearDisable
 /*
  * In interrupt chain, disable in two places: nvic and device
  * Assume PRIMASK is always clear to allow interrupts.
+ *
+ * Sequential multiprotocol: use nvicRaw only when SD is disabled
  */
 void Radio::enableInterruptForMsgReceived() {
 	assert(!RadioData::device.isDisabledEventSet());	// else interrupt immediately???
-#ifdef SOFTDEVICE_PRESENT
-	NvicCoordinated::enableRadioIRQ();
-#else
 	NvicRaw::enableRadioIRQ();
-#endif
 	RadioData::device.enableInterruptForDisabledEvent();
 }
 void Radio::disableInterruptForMsgReceived() {
-#ifdef SOFTDEVICE_PRESENT
-	NvicCoordinated::disableRadioIRQ();
-#else
 	NvicRaw::disableRadioIRQ();
-#endif
 	RadioData::device.disableInterruptForDisabledEvent();
 }
 bool Radio::isEnabledInterruptForMsgReceived() {

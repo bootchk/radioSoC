@@ -10,13 +10,8 @@
 #include <drivers/clock/compareRegister.h>
 #include <drivers/clock/compareRegArray.h>
 
-#ifdef SOFTDEVICE_PRESENT
-   // from libNRFDrivers
-   #include <nvicCoordinated.h>
-#else
-   // from nRF5x
-   #include <drivers/nvic/nvicRaw.h>
-#endif
+// Sequential multiprotocol: use nvicRaw only when SD is disabled
+#include <drivers/nvic/nvicRaw.h>	// nRF5x
 
 
 #include <cassert>
@@ -191,11 +186,9 @@ void TaskTimer::configureCompareRegisterForTimer(TaskTimerIndex index, OSTime ti
 		 * When caller is a task, in ISR context, the interrupt will process when this task completes.
 		 * ISR will see the expired timer, and handle it, even though no event from compare register.
 		 */
-#ifdef SOFTDEVICE_PRESENT
-		NvicCoordinated::pendLFTimerInterrupt();
-#else
+
+		// assert SD disabled, so safe to use raw NVIC
 		NvicRaw::pendLFTimerInterrupt();
-#endif
 	}
 	else { // Guaranteed that CompareRegister will generate event and interrupt.
 	}

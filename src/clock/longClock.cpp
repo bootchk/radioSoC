@@ -8,14 +8,13 @@
 // platform lib
 #include <drivers/clock/counter.h>
 #ifdef SOFTDEVICE_PRESENT
-   // from libNRFDrivers
-   #include <lowFreqClockCoordinated.h>
-   #include <nvicCoordinated.h>
+   #include <lowFreqClockCoordinated.h>	// from libNRFDrivers
 #else
-   // from nRF5x
-   #include <drivers/oscillators/lowFreqClockRaw.h>
-   #include <drivers/nvic/nvicRaw.h>
+   #include <drivers/oscillators/lowFreqClockRaw.h>	// from nRF5x
 #endif
+
+// Sequential multiprotocol: use nvicRaw only when SD is disabled
+#include <drivers/nvic/nvicRaw.h>	// nRF5x
 
 /*
  * !!! Include RTCx_IRQHandler here so that it overrides default handler.
@@ -84,11 +83,10 @@ void LongClock::start() {
 	// Docs don't say this can't be done while counter is running
 	Counter::configureOverflowInterrupt();
 	// assert overflow interrupt is enabled in device
-#ifdef SOFTDEVICE_PRESENT
-	NvicCoordinated::enableLFTimerIRQ();
-#else
+
+	// assert SD disabled, so safe to use raw NVIC
 	NvicRaw::enableLFTimerIRQ();
-#endif
+
 	// assert RTCx_IRQ is enabled (for counter and timers)
 	// mostSignificantBits will increment on overflow
 

@@ -8,16 +8,10 @@
 #include <drivers/oscillators/hfClock.h>
 
 
-//#include "sleeperObs.h"
-
 #ifdef SOFTDEVICE_PRESENT
-// from libNRFDrivers
-#include <lowFreqClockCoordinated.h>
-#include <nvicCoordinated.h>
+   #include <lowFreqClockCoordinated.h>	// from libNRFDrivers
 #else
-// nRF5x
-#include <drivers/oscillators/lowFreqClockRaw.h>
-#include <drivers/nvic/nvicRaw.h>
+   #include <drivers/oscillators/lowFreqClockRaw.h>  // nRF5x
 #endif
 
 
