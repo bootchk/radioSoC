@@ -2,33 +2,14 @@
 #include "powerManager.h"
 #include "powerMonitor.h"
 
-// platform lib e.g. nRF5x
-#include <drivers/adc.h>
+#include "vcc.h"
 
-
-
-#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA) || defined(NRF51)
-#else
-#error "NRF51 or NRF52810_XXAA or NRF52832_XXAA not defined"
-#endif
-
-
-namespace {
 
 /*
  * Uses PowerMonitor and ADC, somewhat arbitrarily.
- *
  * You could use only the ADC (on nrf51) or SAADC (on nrf52), could define whatever levels you wish.
- *
  * On the nrf52 you could use only the PowerMonitor which defines more levels, possible as high as 3.6V needed for isPowerExcess.
  */
-PowerMonitor powerMonitor;
-
-#ifdef NRF51
-ADC adc;
-#endif
-}  // namespace
-
 
 
 /*
@@ -57,56 +38,28 @@ ADC adc;
  */
 
 void PowerManager::init() {
-
-#ifdef NRF51
-	adc.init();
-#endif
-
+	Vcc::init();
 	PowerMonitor::initBrownoutCallback();
 }
 
 
 void PowerManager::enterBrownoutDetectMode() {
 	// PowerMonitor does it
-	powerMonitor.enterBrownoutDetectMode();
+	PowerMonitor::enterBrownoutDetectMode();
 }
 
 
-// Implemented using ADC or SAADC
 bool PowerManager::isPowerExcess() {
-	// adc differs by family: NRF51 ADC, NRF52 SAADC
-	// There is no adc device common to both families
 	bool result;
-#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
-	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
-	// result = false;
-
-	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
-
-#elif NRF51
-	ADCResult value = adc.getVccProportionTo255();
-	// Need to use value smaller than 0xFF? say 3.4V
-	// This is fragile: must use >= since value never greater than ADC::Result3_6V
-	result = (value >= ADC::Result3_6V);
-#endif
+	VccResult value = Vcc::measure();
+	result = (value >= VccResult::Result3_6V);
 	return result;
 }
 
 bool PowerManager::isPowerNearExcess() {
 	bool result;
-#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
-	// By returning false, disable all app logic to shed power and prevent Vcc>Vmax
-	// result = false;
-
-	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
-
-#elif NRF51
-	ADCResult value = adc.getVccProportionTo255();
-	// Need to use value smaller than 0xFF? say 3.4V
-	// This is fragile: must use >= since value never greater than ADC::Result3_6V
-	// TODO nearness a parameter defined elsewhere instead of here just 0.2V
-	result = (value >= ADC::Result3_4V);
-#endif
+	VccResult value = Vcc::measure();
+	result = (value >= VccResult::Result3_4V);
 	return result;
 }
 
@@ -114,20 +67,19 @@ bool PowerManager::isPowerNearExcess() {
 
 bool PowerManager::isPowerAboveUltraHigh(){
 	bool result;
-#if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
-	result = powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_8);
-#elif NRF51
-	ADCResult value = adc.getVccProportionTo255();
-	result = (value >= ADC::Result3_2V);
-#endif
+
+// OLD #if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
+//	result = PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_8);
+	VccResult value = Vcc::measure();
+	result = (value >= VccResult::Result3_2V);
 	return result;
 }
 
 // Implemented using POFCON
-bool PowerManager::isPowerAboveHigh()     { return powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_7);}
-bool PowerManager::isPowerAboveMedium()   { return powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_5);}
-bool PowerManager::isPowerAboveLow()      { return powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_3);}
-bool PowerManager::isPowerAboveUltraLow() { return powerMonitor.isVddGreaterThanThreshold(PowerThreshold::V2_1);}
+bool PowerManager::isPowerAboveHigh()     { return PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_7);}
+bool PowerManager::isPowerAboveMedium()   { return PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_5);}
+bool PowerManager::isPowerAboveLow()      { return PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_3);}
+bool PowerManager::isPowerAboveUltraLow() { return PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_1);}
 
 
 VoltageRange PowerManager::getVoltageRange() {

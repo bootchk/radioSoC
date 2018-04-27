@@ -10,7 +10,6 @@
 #include "../ensemble/ensemble.h"
 
 // platform lib e.g. nRF5x
-#include <drivers/adc.h>
 #include <drivers/powerComparator.h>
 #include <drivers/flashController.h>
 #include <drivers/mcu.h>
