@@ -9,7 +9,7 @@
  */
 
 
-enum class VccResult{
+enum VccResult{
 	// Since using 8-bit resolution
 	Result3_6V = 255,
 	Result3_4V = 240,
@@ -22,5 +22,5 @@ enum class VccResult{
 class Vcc {
 public:
 	static void init();
-	static VccResult measure();
+	static unsigned int measure();
 };

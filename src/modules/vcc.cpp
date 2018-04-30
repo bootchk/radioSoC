@@ -23,17 +23,19 @@ void Vcc::init() {
 }
 
 
-VccResult Vcc::measure() {
-	VccResult value;
+unsigned int Vcc::measure() {
+	unsigned int value;
 
 #if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
 
-	value = static_cast<VccResult> (VccMonitor::getVccProportionTo255());
+	value = VccMonitor::getVccProportionTo255();
 
 #elif NRF51
 	value = ADC::getVccProportionTo255();
 	// Need to use value smaller than 0xFF? say 3.4V
 	// This is fragile: must use >= since value never greater than ADC::Result3_6V
+#else
+#error "NRF family not defined"
 
 #endif
 	return value;

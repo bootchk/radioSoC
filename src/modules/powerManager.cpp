@@ -51,14 +51,14 @@ void PowerManager::enterBrownoutDetectMode() {
 
 bool PowerManager::isPowerExcess() {
 	bool result;
-	VccResult value = Vcc::measure();
+	unsigned int value = Vcc::measure();
 	result = (value >= VccResult::Result3_6V);
 	return result;
 }
 
 bool PowerManager::isPowerNearExcess() {
 	bool result;
-	VccResult value = Vcc::measure();
+	unsigned int value = Vcc::measure();
 	result = (value >= VccResult::Result3_4V);
 	return result;
 }
@@ -70,7 +70,7 @@ bool PowerManager::isPowerAboveUltraHigh(){
 
 // OLD #if defined(NRF52832_XXAA) || defined(NRF52810_XXAA)
 //	result = PowerMonitor::isVddGreaterThanThreshold(PowerThreshold::V2_8);
-	VccResult value = Vcc::measure();
+	unsigned int value = Vcc::measure();
 	result = (value >= VccResult::Result3_2V);
 	return result;
 }
